@@ -34,27 +34,24 @@
     group; your package should define its own command set in order to avoid collisions  
     with command ids defined by other packages. -->
 
-
+    
     <!-- In this section you can define new menu groups. A menu group is a container for 
          other menus or buttons (commands); from a visual point of view you can see the 
          group as the part of a menu contained between two lines. The parent of a group 
          must be a menu. -->
     <Groups>
 
-      <Group guid="guidConfigTransformationCmdSet" id="MainMenuGroup" priority="0x0600">
-        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_ITEMNODE"/>
+      <Group guid="guidConfigTransformationCmdSet" id="MyMenuGroup" priority="0x0600">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_ITEMNODE"/> 
+      <!--
+      IDM_VS_MENU_TOOLS
+      -->
       </Group>
+      
 
-      <Group guid="guidConfigTransformationCmdSet" id="MainMenuGroup" priority="0x0600">
-        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_WEBITEMNODE"/>
-      </Group>
-
-      <Group guid="guidConfigTransformationCmdSet" id="SubMenuGroup" priority="0x0000">
-        <Parent guid="guidConfigTransformationCmdSet" id="SubMenu"/> 
-      </Group>
 
     </Groups>
-
+    
     <!--Buttons section. -->
     <!--This section defines the elements the user can interact with, like a menu command or a button 
         or combo box in a toolbar. -->
@@ -67,42 +64,18 @@
               <CommandFlag>DynamicVisibility</CommandFlag>
           If you do not want an image next to your command, remove the Icon node /> -->
 
-      <Button guid="guidConfigTransformationCmdSet" id="cmdidCtxMenuTransformItem" priority="0x0100" type="Button">
-        <Parent guid="guidConfigTransformationCmdSet" id="SubMenuGroup" />
+      <Button guid="guidConfigTransformationCmdSet" id="cmdidToolMenuCmd" priority="0x0100" type="Button">
+        <Parent guid="guidConfigTransformationCmdSet" id="MyMenuGroup" />
         <Icon guid="guidImages" id="bmpPic1" />
-        <CommandFlag>DefaultInvisible</CommandFlag>
-        <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
-          <ButtonText>Execute transformation</ButtonText>
-          <CommandName>Execute transformation</CommandName>
+          <ButtonText>ToolMenuCmd</ButtonText>
         </Strings>
       </Button>
 
-      <Button guid="guidConfigTransformationCmdSet" id="cmdidCtxMenuReloadSourceItem" priority="0x0100" type="Button">
-        <Parent guid="guidConfigTransformationCmdSet" id="SubMenuGroup" />
-        <Icon guid="guidImages" id="bmpPic2" />
-        <CommandFlag>DefaultInvisible</CommandFlag>
-        <CommandFlag>DynamicVisibility</CommandFlag>
-        <Strings>
-          <ButtonText>Reload source file</ButtonText>
-          <CommandName>Reload source file</CommandName>
-        </Strings>
-      </Button>
+
 
     </Buttons>
-
-    <Menus>
-
-      <Menu guid="guidConfigTransformationCmdSet" id="SubMenu" priority="0x0100" type="Menu">
-        <Parent guid="guidConfigTransformationCmdSet" id="MainMenuGroup"/>
-        <Strings>
-          <ButtonText>Config transformation</ButtonText>
-          <CommandName>Config transformation</CommandName>
-        </Strings>
-      </Menu>
-
-    </Menus>
-
+   
     <!--The bitmaps section is used to define the bitmaps that are used for the commands.-->
     <Bitmaps>
       <!--  The bitmap id is defined in a way that is a little bit different from the others: 
@@ -111,9 +84,9 @@
             inside a button definition. An important aspect of this declaration is that the element id 
             must be the actual index (1-based) of the bitmap inside the bitmap strip. -->
       <Bitmap guid="guidImages" href="Resources\Images.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows"/>
-
+      
     </Bitmaps>
-
+ 
   </Commands>
 
 
@@ -122,22 +95,18 @@
 
   <Symbols>
     <!-- This is the package guid. -->
-    <GuidSymbol name="guidConfigTransformationPkg" value="{a8ef38c4-8d82-4245-a6ac-775412dd55e7}" />
-
+    <GuidSymbol name="guidConfigTransformationPkg" value="{7cf867d9-725e-43b9-a3b2-9a61ca19da4d}" />
+    
     <!-- This is the guid used to group the menu commands together -->
-    <GuidSymbol name="guidConfigTransformationCmdSet" value="{0180f190-1c18-4c44-b021-9768701419d7}">
+    <GuidSymbol name="guidConfigTransformationCmdSet" value="{18ad250f-f0b8-4d2a-a2c9-0fc831b2488d}">
 
-      <IDSymbol name="MainMenuGroup" value="0x1020" />
-      <IDSymbol name="cmdidCtxMenuTransformItem" value="0x0100" />
-      <IDSymbol name="cmdidCtxMenuReloadSourceItem" value="0x0105" />
-      <IDSymbol name="SubMenu" value="0x1100"/>
-      <IDSymbol name="SubMenuGroup" value="0x1150"/>
-
+      <IDSymbol name="MyMenuGroup" value="0x1020" />
+      <IDSymbol name="cmdidToolMenuCmd" value="0x0100" />
     </GuidSymbol>
-
-
-
-    <GuidSymbol name="guidImages" value="{bd6e760b-f68f-418d-a012-f5a528be2c1f}" >
+    
+    
+    
+    <GuidSymbol name="guidImages" value="{6c594e47-1308-40c3-bc40-9f40851d5657}" >
       <IDSymbol name="bmpPic1" value="1" />
       <IDSymbol name="bmpPic2" value="2" />
       <IDSymbol name="bmpPicSearch" value="3" />

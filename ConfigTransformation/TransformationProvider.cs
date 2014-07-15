@@ -19,7 +19,8 @@ namespace Marazt.ConfigTransformation
         {
             ".csproj",
             ".vbproj",
-            ".fsproj"
+            ".fsproj",
+            ""//website
         };
 
         #endregion Constants
@@ -34,14 +35,19 @@ namespace Marazt.ConfigTransformation
 
         public bool CheckAndGetSourceFileFromTransformationFile(string transformationFileName, out string sourceFileName)
         {
-            var match = Regex.Match(transformationFileName, TranformationFilePattern, RegexOptions.IgnoreCase);
+            sourceFileName = null;
+            if (string.IsNullOrEmpty(transformationFileName))
+            {
+                return false; 
+            }
+            var match = Regex.Match(Path.GetFileName(transformationFileName), TranformationFilePattern, RegexOptions.IgnoreCase);
             if (match.Success)
             {
-                sourceFileName = match.Groups[1].Value + ConfigExtension;
+                sourceFileName = Path.Combine(Path.GetDirectoryName(transformationFileName),
+                    match.Groups[1].Value + ConfigExtension);
                 return true;
             }
 
-            sourceFileName = null;
             return false;
         }
 

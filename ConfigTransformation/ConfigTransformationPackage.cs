@@ -93,10 +93,13 @@ namespace Marazt.ConfigTransformation
 
         private void menuTransformationCommands_BeforeQueryStatus(object sender, EventArgs e)
         {
+
+
             // get the menu that fired the event
             var menuCommand = sender as OleMenuCommand;
             if (menuCommand != null)
             {
+                
                 // start by assuming that the menu will not be shown
                 menuCommand.Visible = false;
                 menuCommand.Enabled = false;
@@ -122,7 +125,6 @@ namespace Marazt.ConfigTransformation
                     return;
                 }
 
-                menuCommand.Text = "bagr!";
                 menuCommand.Visible = true;
                 menuCommand.Enabled = true;
             }
@@ -287,11 +289,11 @@ namespace Marazt.ConfigTransformation
                 return false;
             }
 
-            var buildPropertyStorage = vsProject as IVsBuildPropertyStorage;
-            if (buildPropertyStorage == null)
-            {
-                return false;
-            }
+            //var buildPropertyStorage = vsProject as IVsBuildPropertyStorage;
+            //if (buildPropertyStorage == null)
+            //{
+            //    return false;
+            //}
 
 
             if (ErrorHandler.Failed(vsProject.GetMkDocument(itemid, out itemFullPath)))

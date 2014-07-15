@@ -1,17 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="a8ef38c4-8d82-4245-a6ac-775412dd55e7" Version="1.1" Language="en-US" Publisher="marazt" />
+    <Identity Id="7cf867d9-725e-43b9-a3b2-9a61ca19da4d" Version="1.0" Language="en-US" Publisher="marazt" />
     <DisplayName>ConfigTransformation</DisplayName>
-    <Description xml:space="preserve">Extension which enables ability to transform various config file even there does not exist build definition for the transformation file. Supports all .NET projects even WebSites.</Description>
-    <Icon>transform.ico</Icon>
-    <PreviewImage>transform.png</PreviewImage>
-    <Tags>Config, Transformation, Configuration, Build</Tags>
+    <Description>XX TODO</Description>
   </Metadata>
-  <Installation InstalledByMsi="false" AllUsers="true">
-    <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="[11.0,12.0)" />
-    <InstallationTarget Version="[11.0,12.0)" Id="Microsoft.VisualStudio.Premium" />
-    <InstallationTarget Version="[11.0,12.0)" Id="Microsoft.VisualStudio.Ultimate" />
+  <Installation InstalledByMsi="false">
+    <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="11.0" />
   </Installation>
   <Dependencies>
     <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="4.5" />
