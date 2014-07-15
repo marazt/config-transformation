@@ -49,9 +49,6 @@
         <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_WEBITEMNODE"/>
       </Group>
 
-      <Group guid="guidConfigTransformationCmdSet" id="SubMenuGroup" priority="0x0000">
-        <Parent guid="guidConfigTransformationCmdSet" id="SubMenu"/> 
-      </Group>
 
     </Groups>
 
@@ -68,7 +65,7 @@
           If you do not want an image next to your command, remove the Icon node /> -->
 
       <Button guid="guidConfigTransformationCmdSet" id="cmdidCtxMenuTransformItem" priority="0x0100" type="Button">
-        <Parent guid="guidConfigTransformationCmdSet" id="SubMenuGroup" />
+        <Parent guid="guidConfigTransformationCmdSet" id="MainMenuGroup" />
         <Icon guid="guidImages" id="bmpPic1" />
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
@@ -78,30 +75,10 @@
         </Strings>
       </Button>
 
-      <Button guid="guidConfigTransformationCmdSet" id="cmdidCtxMenuReloadSourceItem" priority="0x0100" type="Button">
-        <Parent guid="guidConfigTransformationCmdSet" id="SubMenuGroup" />
-        <Icon guid="guidImages" id="bmpPic2" />
-        <CommandFlag>DefaultInvisible</CommandFlag>
-        <CommandFlag>DynamicVisibility</CommandFlag>
-        <Strings>
-          <ButtonText>Reload source file</ButtonText>
-          <CommandName>Reload source file</CommandName>
-        </Strings>
-      </Button>
 
     </Buttons>
 
-    <Menus>
-
-      <Menu guid="guidConfigTransformationCmdSet" id="SubMenu" priority="0x0100" type="Menu">
-        <Parent guid="guidConfigTransformationCmdSet" id="MainMenuGroup"/>
-        <Strings>
-          <ButtonText>Config transformation</ButtonText>
-          <CommandName>Config transformation</CommandName>
-        </Strings>
-      </Menu>
-
-    </Menus>
+  
 
     <!--The bitmaps section is used to define the bitmaps that are used for the commands.-->
     <Bitmaps>
@@ -129,10 +106,7 @@
 
       <IDSymbol name="MainMenuGroup" value="0x1020" />
       <IDSymbol name="cmdidCtxMenuTransformItem" value="0x0100" />
-      <IDSymbol name="cmdidCtxMenuReloadSourceItem" value="0x0105" />
-      <IDSymbol name="SubMenu" value="0x1100"/>
-      <IDSymbol name="SubMenuGroup" value="0x1150"/>
-
+  
     </GuidSymbol>
 
 

@@ -7,7 +7,6 @@ namespace Marazt.ConfigTransformation
     static class PkgCmdIDList
     {
         public const uint cmdidCtxMenuTransformItem = 0x100;
-        public const uint cmdidCtxMenuReloadSourceItem = 0x105;
         public const uint SubMenu = 0x1100;
     };
 }

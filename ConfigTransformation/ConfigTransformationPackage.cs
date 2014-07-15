@@ -81,13 +81,6 @@ namespace Marazt.ConfigTransformation
 
                 mcs.AddCommand(transformMenuItem);
 
-                // Create the command for reload source file
-                var reloadSourceMenuCommandID = new CommandID(GuidList.guidConfigTransformationCmdSet, (int)PkgCmdIDList.cmdidCtxMenuReloadSourceItem);
-                
-                var reloadSourceMenuItem = new OleMenuCommand(ReloadSourceMenuItemCallback, reloadSourceMenuCommandID);
-                reloadSourceMenuItem.BeforeQueryStatus += menuTransformationCommands_BeforeQueryStatus;
-
-                mcs.AddCommand(reloadSourceMenuItem);
             }
         }
 
@@ -230,7 +223,7 @@ namespace Marazt.ConfigTransformation
         {
             //TODO: Je potreba volat tu hierarchy? Nestaci proste jmeno souboru z eventu?
             string fileName;
-            string backupFile;
+    
             var result = IsCorrectItemForTransformationOperationsSelected(out fileName);
             if (!result)
             {

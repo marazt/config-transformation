@@ -4,9 +4,9 @@
     <Identity Id="a8ef38c4-8d82-4245-a6ac-775412dd55e7" Version="1.1" Language="en-US" Publisher="marazt" />
     <DisplayName>ConfigTransformation</DisplayName>
     <Description xml:space="preserve">Extension which enables ability to transform various config file even there does not exist build definition for the transformation file. Supports all .NET projects even WebSites.</Description>
-    <Icon>transform.ico</Icon>
-    <PreviewImage>transform.png</PreviewImage>
-    <Tags>Config, Transformation, Configuration, Build</Tags>
+    <Icon>transform.png</Icon>
+    <PreviewImage>preview.png</PreviewImage>
+    <Tags>Config, Transformation, Configuration, Build, XML, XDT</Tags>
   </Metadata>
   <Installation InstalledByMsi="false" AllUsers="true">
     <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="[11.0,12.0)" />
