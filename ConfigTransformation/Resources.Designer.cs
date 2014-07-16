@@ -61,6 +61,15 @@ namespace Marazt.ConfigTransformation {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Config Transformation.
+        /// </summary>
+        public static string ApplicationCaption {
+            get {
+                return ResourceManager.GetString("ApplicationCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Copy of source file &apos;{0}&apos; to file &apos;{1}&apos; done.
         /// </summary>
         public static string CopyOfSourceFileDone {

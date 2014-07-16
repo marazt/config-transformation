@@ -76,10 +76,7 @@ namespace Marazt.ConfigTransformation
         /// </summary>
         public ConfigTransformationPackage()
         {
-            Logger.LogInfo(string.Format(Resources.EnteringConstructor, this));
-
             this.transformationProvider = new TransformationProvider();
-
         }
 
         #endregion Constructors
@@ -97,7 +94,7 @@ namespace Marazt.ConfigTransformation
         /// </summary>
         protected override void Initialize()
         {
-            Logger.LogInfo(string.Format(Resources.EnteringInitializeOf, this));
+            Logger.LogInfo(string.Format(Resources.EnteringInitializeOf, Resources.ApplicationCaption));
             base.Initialize();
 
             // Add our command handlers for menu (commands must exist in the .vsct file)
@@ -349,7 +346,7 @@ namespace Marazt.ConfigTransformation
                 return default(T);
             }
 
-            return (T) val;
+            return (T)val;
         }
 
         #endregion Methods

@@ -10,7 +10,7 @@ namespace Marazt.ConfigTransformation
     /// </summary>
     ///http://social.msdn.microsoft.com/Forums/vstudio/en-US/f15b121b-6874-4012-873a-3fc1a3fb9770/specified-cast-is-not-vaild?forum=vsx
     [CLSCompliant(false), ComVisible(true)]
-    [ClassInterface(ClassInterfaceType.AutoDual)]  
+    [ClassInterface(ClassInterfaceType.AutoDual)]
     [Guid("1D9ECCF3-5D2F-4112-9B25-264596873DC9")]
     public class OptionsPage : MSVSIP.DialogPage
     {
@@ -27,7 +27,7 @@ namespace Marazt.ConfigTransformation
         public const string SourceFileRegexpMatchIndexPropertyName = "SourceFileRegexpMatchIndex";
 
         #endregion Constants
-        
+
         #region Fields
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace Marazt.ConfigTransformation
         [Category("Basic Options")]
         // ReSharper disable once LocalizableElement
         [DisplayName("Source file regexp match index")]
-        [Description(@"Index of the trans. file regexp to get source file name, e.g. for file 'App.Debug.config', regexp '(.+)\\.(.+)\\.config' and index 1 returns 'App'")]
+        [Description("Index of the trans. file regexp to get source file name, e.g. for file 'App.Debug.config', regexp '(.+)\\.(.+)\\.config' and index 1 returns 'App'")]
         public int SourceFileRegexpMatchIndex
         {
             get
