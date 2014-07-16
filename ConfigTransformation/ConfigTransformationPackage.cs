@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Globalization;
 using System.Runtime.InteropServices;
 using System.ComponentModel.Design;
-using System.Windows.Forms;
 using EnvDTE;
-using Microsoft.Win32;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 
 namespace Marazt.ConfigTransformation
 {
+
+
     /// <summary>
     /// This is the class that implements the package exposed by this assembly.
     ///
@@ -36,25 +33,59 @@ namespace Marazt.ConfigTransformation
     //http://www.codingodyssey.com/2008/03/22/dynamic-menu-commands-in-visual-studio-packages-part-2/
     //https://github.com/oncheckin/oncheckin-transformer/blob/master/OnCheckinTransformer.VisualStudio/OnCheckinTransforms.VisualStudioPackage.cs
     [ProvideAutoLoad("{f1536ef8-92ec-443c-9ed7-fdadf150da82}")]
+    //http://msdn.microsoft.com/en-us/library/bb166195.aspx
+    //http://msdn.microsoft.com/en-us/library/bb166553.aspx
+    //http://code.msdn.microsoft.com/VSSDK-IDE-Sample-Options-f152f574
+    [ProvideOptionPageAttribute(typeof(OptionsPage), ConfigTransformation, General, 0, 0, true)]
     public sealed class ConfigTransformationPackage : Package
     {
-        private TransformationProvider transProvider;
+
+        #region Constants
+
+        /// <summary>
+        /// The configuration transformation
+        /// </summary>
+        private const string ConfigTransformation = "Config Transformation";
+
+        /// <summary>
+        /// The general
+        /// </summary>
+        private const string General = "General";
+
+        #endregion Constants
+
+
+        #region Properties
+
+        /// <summary>
+        /// The transformation provider
+        /// </summary>
+        private readonly TransformationProvider transformationProvider;
+
+        #endregion Properties
+
+
+        #region Constructors
 
         /// <summary>
         /// Default constructor of the package.
-        /// Inside this method you can place any initialization code that does not require 
-        /// any Visual Studio service because at this point the package object is created but 
-        /// not sited yet inside Visual Studio environment. The place to do all the other 
+        /// Inside this method you can place any initialization code that does not require
+        /// any Visual Studio service because at this point the package object is created but
+        /// not sited yet inside Visual Studio environment. The place to do all the other
         /// initialization is the Initialize method.
         /// </summary>
         public ConfigTransformationPackage()
         {
-            Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering constructor for: {0}", this.ToString()));
+            Logger.LogInfo(string.Format(Resources.EnteringConstructor, this));
 
-            this.transProvider = new TransformationProvider();
+            this.transformationProvider = new TransformationProvider();
+
         }
 
+        #endregion Constructors
 
+
+        #region Methods
 
         /////////////////////////////////////////////////////////////////////////////
         // Overridden Package Implementation
@@ -66,7 +97,7 @@ namespace Marazt.ConfigTransformation
         /// </summary>
         protected override void Initialize()
         {
-            Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering Initialize() of: {0}", this.ToString()));
+            Logger.LogInfo(string.Format(Resources.EnteringInitializeOf, this));
             base.Initialize();
 
             // Add our command handlers for menu (commands must exist in the .vsct file)
@@ -77,14 +108,19 @@ namespace Marazt.ConfigTransformation
                 var transformMenuCommandID = new CommandID(GuidList.guidConfigTransformationCmdSet, (int)PkgCmdIDList.cmdidCtxMenuTransformItem);
 
                 var transformMenuItem = new OleMenuCommand(TransformMenuItemCallback, transformMenuCommandID);
-                transformMenuItem.BeforeQueryStatus += menuTransformationCommands_BeforeQueryStatus;
+                transformMenuItem.BeforeQueryStatus += MenuTransformationCommandsBeforeQueryStatus;
 
                 mcs.AddCommand(transformMenuItem);
 
             }
         }
 
-        private void menuTransformationCommands_BeforeQueryStatus(object sender, EventArgs e)
+        /// <summary>
+        /// Handles the BeforeQueryStatus event of the menuTransformationCommands control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private void MenuTransformationCommandsBeforeQueryStatus(object sender, EventArgs e)
         {
 
 
@@ -92,7 +128,7 @@ namespace Marazt.ConfigTransformation
             var menuCommand = sender as OleMenuCommand;
             if (menuCommand != null)
             {
-                
+
                 // start by assuming that the menu will not be shown
                 menuCommand.Visible = false;
                 menuCommand.Enabled = false;
@@ -112,7 +148,7 @@ namespace Marazt.ConfigTransformation
                     return;
                 }
 
-                var fileName = this.GetFileNameFromItem(vsProject, itemid);
+                var fileName = GetFileNameFromItem(vsProject, itemid);
                 if (fileName == null || !IsTransformationFile(fileName))
                 {
                     return;
@@ -124,7 +160,13 @@ namespace Marazt.ConfigTransformation
         }
 
 
-        private string GetFileNameFromItem(IVsProject project, uint itemid)
+        /// <summary>
+        /// Gets the file name from item.
+        /// </summary>
+        /// <param name="project">The project.</param>
+        /// <param name="itemid">The itemid.</param>
+        /// <returns>Full name of the file of the item</returns>
+        private static string GetFileNameFromItem(IVsProject project, uint itemid)
         {
             string itemFullPath = null;
 
@@ -134,11 +176,13 @@ namespace Marazt.ConfigTransformation
             }
 
             return itemFullPath;
-    
+
         }
         private bool IsTransformationFile(string fileName)
         {
-            return transProvider.IsTransformationFile(fileName);
+            return transformationProvider.IsTransformationFile(fileName,
+                GetPropertyValue<string>(OptionsPage.TransfomationFileNameRegexpPropertyName),
+                GetPropertyValue<int>(OptionsPage.SourceFileRegexpMatchIndexPropertyName));
         }
 
         private bool ProjectSupportsTransforms(IVsProject project)
@@ -148,19 +192,25 @@ namespace Marazt.ConfigTransformation
             {
                 return false;
             }
-            
-            return transProvider.IsProjectSupported(projectFullPath);
+
+            return transformationProvider.IsProjectSupported(projectFullPath);
 
         }
 
-        public static bool IsSingleProjectItemSelection(out IVsHierarchy hierarchy, out uint itemid)
+        /// <summary>
+        /// Determines whether [is single project item selection] [the specified hierarchy].
+        /// </summary>
+        /// <param name="hierarchy">The hierarchy.</param>
+        /// <param name="itemid">The itemid.</param>
+        /// <returns></returns>
+        private static bool IsSingleProjectItemSelection(out IVsHierarchy hierarchy, out uint itemid)
         {
             hierarchy = null;
             itemid = VSConstants.VSITEMID_NIL;
-            int hr = VSConstants.S_OK;
+            int hierarchySelection = VSConstants.S_OK;
 
-            var monitorSelection = Package.GetGlobalService(typeof(SVsShellMonitorSelection)) as IVsMonitorSelection;
-            var solution = Package.GetGlobalService(typeof(SVsSolution)) as IVsSolution;
+            var monitorSelection = GetGlobalService(typeof(SVsShellMonitorSelection)) as IVsMonitorSelection;
+            var solution = GetGlobalService(typeof(SVsSolution)) as IVsSolution;
             if (monitorSelection == null || solution == null)
             {
                 return false;
@@ -172,9 +222,9 @@ namespace Marazt.ConfigTransformation
 
             try
             {
-                hr = monitorSelection.GetCurrentSelection(out hierarchyPtr, out itemid, out multiItemSelect, out selectionContainerPtr);
+                hierarchySelection = monitorSelection.GetCurrentSelection(out hierarchyPtr, out itemid, out multiItemSelect, out selectionContainerPtr);
 
-                if (ErrorHandler.Failed(hr) || hierarchyPtr == IntPtr.Zero || itemid == VSConstants.VSITEMID_NIL)
+                if (ErrorHandler.Failed(hierarchySelection) || hierarchyPtr == IntPtr.Zero || itemid == VSConstants.VSITEMID_NIL)
                 {
                     // there is no selection
                     return false;
@@ -219,27 +269,6 @@ namespace Marazt.ConfigTransformation
 
         #endregion
 
-        private void ReloadSourceMenuItemCallback(object sender, EventArgs e)
-        {
-            //TODO: Je potreba volat tu hierarchy? Nestaci proste jmeno souboru z eventu?
-            string fileName;
-    
-            var result = IsCorrectItemForTransformationOperationsSelected(out fileName);
-            if (!result)
-            {
-                return;
-            }
-
-            string sourceFileName;
-
-            if (!this.transProvider.CheckAndGetSourceFileFromTransformationFile(fileName, out sourceFileName))
-            {
-                return;
-            }
-
-            transProvider.CreateBackupFileOfFile(sourceFileName,
-                this.transProvider.GetBackupFileNameOfFile(sourceFileName));
-        }
 
         /// <summary>
         /// This function is the callback used to execute a command when the a menu item is clicked.
@@ -252,19 +281,26 @@ namespace Marazt.ConfigTransformation
             var result = IsCorrectItemForTransformationOperationsSelected(out fileName);
             if (!result)
             {
-                return;;
+                return;
             }
 
-            transProvider.Transform(fileName);
-            
+            transformationProvider.Transform(fileName, GetPropertyValue<string>(OptionsPage.TransfomationFileNameRegexpPropertyName),
+             GetPropertyValue<int>(OptionsPage.SourceFileRegexpMatchIndexPropertyName));
+
         }
 
+        /// <summary>
+        /// Determines whether [is correct item for transformation operations selected] [the specified item full path].
+        /// </summary>
+        /// <param name="itemFullPath">The item full path.</param>
+        /// <returns>[True] if correct file for transformation is selected, otherwise [False]</returns>
         private bool IsCorrectItemForTransformationOperationsSelected(out string itemFullPath)
         {
             itemFullPath = null;
             IVsHierarchy hierarchy = null;
             uint itemid = VSConstants.VSITEMID_NIL;
 
+            //TODO: Je potreba volat tu hierarchy? Nestaci proste jmeno souboru z eventu?
             if (!IsSingleProjectItemSelection(out hierarchy, out itemid))
             {
                 return false;
@@ -297,6 +333,26 @@ namespace Marazt.ConfigTransformation
             return true;
         }
 
+        /// <summary>
+        /// Gets the property value.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns>Value of the options property</returns>
+        private static T GetPropertyValue<T>(string propertyName)
+        {
+            var dte = (DTE)GetGlobalService(typeof(DTE));
+            var props = dte.Properties[ConfigTransformation, General];
+            var val = props.Item(propertyName).Value;
+            if (val == null)
+            {
+                return default(T);
+            }
+
+            return (T) val;
+        }
+
+        #endregion Methods
 
     }
 }

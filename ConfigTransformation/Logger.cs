@@ -6,11 +6,17 @@ namespace Marazt.ConfigTransformation
     /// <summary>
     /// SimpleDebug logger
     /// </summary>
-    public class Logger
+    public static class Logger
     {
         #region Constants
 
+        /// <summary>
+        /// The information message
+        /// </summary>
         private const string InfoMessage = "[ConfigTransformation][Info]: {0}";
+        /// <summary>
+        /// The error message
+        /// </summary>
         private const string ErrorMessage = "[ConfigTransformation][Error]: {0}";
 
         #endregion Constants
