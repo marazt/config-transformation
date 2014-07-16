@@ -172,10 +172,17 @@ namespace Marazt.ConfigTransformation
             {
                 this.DeleteBackupFile(backupFileName);
                 Logger.LogInfo(string.Format(Resources.DeletionOfBackupFileDone, backupFileName));
+
                 this.CreateBackupFileOfFile(sourceFileName, backupFileName);
                 Logger.LogInfo(string.Format(Resources.CopyOfSourceFileDone, sourceFileName, backupFileName));
-                TransformationManager.Transform(backupFileName, transofrmationFileName, sourceFileName);
-                Logger.LogInfo(string.Format(Resources.TransformationOfFileDone, backupFileName, transofrmationFileName));
+
+                result = TransformationManager.Transform(backupFileName, transofrmationFileName, sourceFileName, new TransformationLogger());
+                Logger.LogInfo(result
+                    ? string.Format(Resources.TransformationOfFileSuccessfullyDone, backupFileName,
+                        transofrmationFileName, sourceFileName)
+                    : string.Format(Resources.TransformationProcessError, backupFileName, transofrmationFileName,
+                        sourceFileName));
+
                 this.DeleteBackupFile(backupFileName);
                 Logger.LogInfo(string.Format(Resources.DeletionOfBackupFileDone, backupFileName));
             }
@@ -189,7 +196,8 @@ namespace Marazt.ConfigTransformation
         }
 
 
-
         #endregion Methods
+
+
     }
 }

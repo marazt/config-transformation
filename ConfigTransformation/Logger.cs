@@ -17,10 +17,16 @@ namespace Marazt.ConfigTransformation
         /// The information message
         /// </summary>
         private const string InfoMessage = "[Config Transformation][Info]: {0}";
+
         /// <summary>
         /// The error message
         /// </summary>
         private const string ErrorMessage = "[Config Transformation][Error]: {0}";
+
+        /// <summary>
+        /// The warning message
+        /// </summary>
+        private const string WarningMessage = "[Config Transformation][Warning]: {0}";
 
         #endregion Constants
 
@@ -35,6 +41,16 @@ namespace Marazt.ConfigTransformation
         {
             Log(string.Format(InfoMessage, message));
         }
+
+        /// <summary>
+        /// Logs the warning.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        public static void LogWarning(string message)
+        {
+            Log(string.Format(WarningMessage, message));
+        }
+
 
         /// <summary>
         /// Logs the error.

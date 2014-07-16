@@ -142,11 +142,20 @@ namespace Marazt.ConfigTransformation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Transformation of file &apos;{0}&apos; with transformation &apos;{1}&apos; done.
+        ///   Looks up a localized string similar to Transformation of file &apos;{0}&apos; with transformation &apos;{1}&apos; to file &apos;{2}&apos; successfully done.
         /// </summary>
-        public static string TransformationOfFileDone {
+        public static string TransformationOfFileSuccessfullyDone {
             get {
-                return ResourceManager.GetString("TransformationOfFileDone", resourceCulture);
+                return ResourceManager.GetString("TransformationOfFileSuccessfullyDone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error while transforming file &apos;{0}&apos; with transformation &apos;{1}&apos; to file &apos;{2}&apos; successfully done.
+        /// </summary>
+        public static string TransformationProcessError {
+            get {
+                return ResourceManager.GetString("TransformationProcessError", resourceCulture);
             }
         }
     }

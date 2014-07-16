@@ -144,7 +144,10 @@
   <data name="OptionsCaption" xml:space="preserve">
     <value>Config Transformation</value>
   </data>
-  <data name="TransformationOfFileDone" xml:space="preserve">
-    <value>Transformation of file '{0}' with transformation '{1}' done</value>
+  <data name="TransformationOfFileSuccessfullyDone" xml:space="preserve">
+    <value>Transformation of file '{0}' with transformation '{1}' to file '{2}' successfully done</value>
+  </data>
+  <data name="TransformationProcessError" xml:space="preserve">
+    <value>Error while transforming file '{0}' with transformation '{1}' to file '{2}' successfully done</value>
   </data>
 </root>
