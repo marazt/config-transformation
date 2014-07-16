@@ -170,6 +170,8 @@ namespace Marazt.ConfigTransformation
 
             try
             {
+                this.DeleteBackupFile(backupFileName);
+                Logger.LogInfo(string.Format(Resources.DeletionOfBackupFileDone, backupFileName));
                 this.CreateBackupFileOfFile(sourceFileName, backupFileName);
                 Logger.LogInfo(string.Format(Resources.CopyOfSourceFileDone, sourceFileName, backupFileName));
                 TransformationManager.Transform(backupFileName, transofrmationFileName, sourceFileName);
