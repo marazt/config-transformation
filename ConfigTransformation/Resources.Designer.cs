@@ -79,34 +79,16 @@ namespace Marazt.ConfigTransformation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deletion of backup file &apos;{0}&apos; done.
+        ///   Looks up a localized string similar to Deletion of temporary file &apos;{0}&apos; done.
         /// </summary>
-        public static string DeletionOfBackupFileDone {
+        public static string DeletionOfTemporaryFileDone {
             get {
-                return ResourceManager.GetString("DeletionOfBackupFileDone", resourceCulture);
+                return ResourceManager.GetString("DeletionOfTemporaryFileDone", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Entering constructor for: {0}.
-        /// </summary>
-        public static string EnteringConstructor {
-            get {
-                return ResourceManager.GetString("EnteringConstructor", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Entering Initialize() of: {0}.
-        /// </summary>
-        public static string EnteringInitializeOf {
-            get {
-                return ResourceManager.GetString("EnteringInitializeOf", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Error while trasforming file &apos;{0}&apos; with transformation &apos;{1}&apos;.
+        ///   Looks up a localized string similar to Error while trasforming file &apos;{0}&apos; with transformation &apos;{1}&apos; to file &apos;{2}&apos;.
         /// </summary>
         public static string ErrorWhileTransformingFile {
             get {
@@ -120,6 +102,15 @@ namespace Marazt.ConfigTransformation {
         public static string Global {
             get {
                 return ResourceManager.GetString("Global", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initialize of  {0}.
+        /// </summary>
+        public static string InitializeOf {
+            get {
+                return ResourceManager.GetString("InitializeOf", resourceCulture);
             }
         }
         
@@ -151,7 +142,7 @@ namespace Marazt.ConfigTransformation {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error while transforming file &apos;{0}&apos; with transformation &apos;{1}&apos; to file &apos;{2}&apos; successfully done.
+        ///   Looks up a localized string similar to Error while transforming file &apos;{0}&apos; with transformation &apos;{1}&apos; to file &apos;{2}&apos; .
         /// </summary>
         public static string TransformationProcessError {
             get {

@@ -75,6 +75,16 @@
         </Strings>
       </Button>
 
+      <Button guid="guidConfigTransformationCmdSet" id="cmdidCtxMenuComparisonItem" priority="0x0100" type="Button">
+        <Parent guid="guidConfigTransformationCmdSet" id="MainMenuGroup" />
+        <Icon guid="guidImages" id="bmpPic2" />
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <ButtonText>Preview transformation</ButtonText>
+          <CommandName>Preview transformation</CommandName>
+        </Strings>
+      </Button>
 
     </Buttons>
 
@@ -106,7 +116,8 @@
 
       <IDSymbol name="MainMenuGroup" value="0x1020" />
       <IDSymbol name="cmdidCtxMenuTransformItem" value="0x0100" />
-  
+      <IDSymbol name="cmdidCtxMenuComparisonItem" value="0x0105" />
+      
     </GuidSymbol>
 
 

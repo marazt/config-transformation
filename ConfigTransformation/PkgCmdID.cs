@@ -15,6 +15,14 @@ namespace Marazt.ConfigTransformation
         /// The cmdid CTX menu transform item
         /// </summary>
         public const uint cmdidCtxMenuTransformItem = 0x100;
+
+
+
+        /// <summary>
+        /// The cmdid CTX menu comparison item
+        /// </summary>
+        public const uint cmdidCtxMenuComparisonItem = 0x105;
+
         /// <summary>
         /// The sub menu
         /// </summary>

@@ -123,20 +123,17 @@
   <data name="CopyOfSourceFileDone" xml:space="preserve">
     <value>Copy of source file '{0}' to file '{1}' done</value>
   </data>
-  <data name="DeletionOfBackupFileDone" xml:space="preserve">
-    <value>Deletion of backup file '{0}' done</value>
-  </data>
-  <data name="EnteringConstructor" xml:space="preserve">
-    <value>Entering constructor for: {0}</value>
-  </data>
-  <data name="EnteringInitializeOf" xml:space="preserve">
-    <value>Entering Initialize() of: {0}</value>
+  <data name="DeletionOfTemporaryFileDone" xml:space="preserve">
+    <value>Deletion of temporary file '{0}' done</value>
   </data>
   <data name="ErrorWhileTransformingFile" xml:space="preserve">
-    <value>Error while trasforming file '{0}' with transformation '{1}'</value>
+    <value>Error while trasforming file '{0}' with transformation '{1}' to file '{2}'</value>
   </data>
   <data name="Global" xml:space="preserve">
     <value>Global</value>
+  </data>
+  <data name="InitializeOf" xml:space="preserve">
+    <value>Initialize of  {0}</value>
   </data>
   <data name="InvalidTransformationFileName" xml:space="preserve">
     <value>Invalid tranformation file name</value>
@@ -148,6 +145,6 @@
     <value>Transformation of file '{0}' with transformation '{1}' to file '{2}' successfully done</value>
   </data>
   <data name="TransformationProcessError" xml:space="preserve">
-    <value>Error while transforming file '{0}' with transformation '{1}' to file '{2}' successfully done</value>
+    <value>Error while transforming file '{0}' with transformation '{1}' to file '{2}' </value>
   </data>
 </root>

@@ -62,6 +62,8 @@ namespace Marazt.ConfigTransformation
         /// </summary>
         private readonly TransformationProvider transformationProvider;
 
+        private IVsDifferenceService diffService;
+
         #endregion Properties
 
 
@@ -94,7 +96,7 @@ namespace Marazt.ConfigTransformation
         /// </summary>
         protected override void Initialize()
         {
-            Logger.LogInfo(string.Format(Resources.EnteringInitializeOf, Resources.ApplicationCaption));
+            Logger.LogInfo(string.Format(Resources.InitializeOf, Resources.ApplicationCaption));
             base.Initialize();
 
             // Add our command handlers for menu (commands must exist in the .vsct file)
@@ -103,13 +105,20 @@ namespace Marazt.ConfigTransformation
             {
                 // Create the command for transfomration
                 var transformMenuCommandID = new CommandID(GuidList.guidConfigTransformationCmdSet, (int)PkgCmdIDList.cmdidCtxMenuTransformItem);
-
                 var transformMenuItem = new OleMenuCommand(TransformMenuItemCallback, transformMenuCommandID);
                 transformMenuItem.BeforeQueryStatus += MenuTransformationCommandsBeforeQueryStatus;
-
                 mcs.AddCommand(transformMenuItem);
 
+
+                // Create the command for comparison
+                var comparisonMenuCommandID = new CommandID(GuidList.guidConfigTransformationCmdSet, (int)PkgCmdIDList.cmdidCtxMenuComparisonItem);
+                var comparisonMenuItem = new OleMenuCommand(CompareFilesMenuItemCallback, comparisonMenuCommandID);
+                comparisonMenuItem.BeforeQueryStatus += MenuTransformationCommandsBeforeQueryStatus;
+                mcs.AddCommand(comparisonMenuItem);
+
             }
+
+            this.diffService = GetService(typeof(SVsDifferenceService)) as IVsDifferenceService;
         }
 
         /// <summary>
@@ -228,7 +237,10 @@ namespace Marazt.ConfigTransformation
                 }
 
                 // multiple items are selected
-                if (multiItemSelect != null) return false;
+                if (multiItemSelect != null)
+                {
+                    return false;
+                }
 
                 // there is a hierarchy root node selected, thus it is not a single item inside a project
 
@@ -238,9 +250,12 @@ namespace Marazt.ConfigTransformation
                 }
 
                 hierarchy = Marshal.GetObjectForIUnknown(hierarchyPtr) as IVsHierarchy;
-                if (hierarchy == null) return false;
+                if (hierarchy == null)
+                {
+                    return false;
+                }
 
-                Guid guidProjectID = Guid.Empty;
+                var guidProjectID = Guid.Empty;
 
                 if (ErrorHandler.Failed(solution.GetGuidOfProject(hierarchy, out guidProjectID)))
                 {
@@ -287,6 +302,33 @@ namespace Marazt.ConfigTransformation
         }
 
         /// <summary>
+        /// Compares the files menu item callback.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        private void CompareFilesMenuItemCallback(object sender, EventArgs e)
+        {
+            string fileName;
+            var result = IsCorrectItemForTransformationOperationsSelected(out fileName);
+            if (!result)
+            {
+                return;
+            }
+
+
+            var files = transformationProvider.TransformToTemporaryFile(fileName, GetPropertyValue<string>(OptionsPage.TransfomationFileNameRegexpPropertyName),
+                   GetPropertyValue<int>(OptionsPage.SourceFileRegexpMatchIndexPropertyName));
+
+            if (files == null)
+            {
+                return;
+            }
+
+            this.CompareFiles(files.Item1, files.Item2);
+
+        }
+
+        /// <summary>
         /// Determines whether [is correct item for transformation operations selected] [the specified item full path].
         /// </summary>
         /// <param name="itemFullPath">The item full path.</param>
@@ -297,7 +339,7 @@ namespace Marazt.ConfigTransformation
             IVsHierarchy hierarchy = null;
             uint itemid = VSConstants.VSITEMID_NIL;
 
-            //TODO: Je potreba volat tu hierarchy? Nestaci proste jmeno souboru z eventu?
+            //TODO: It is needed?
             if (!IsSingleProjectItemSelection(out hierarchy, out itemid))
             {
                 return false;
@@ -347,6 +389,23 @@ namespace Marazt.ConfigTransformation
             }
 
             return (T)val;
+        }
+
+
+
+        /// <summary>
+        /// Compares the files.
+        /// </summary>
+        /// <param name="leftFileName">Name of the left file.</param>
+        /// <param name="rightFileName">Name of the right file.</param>
+        private void CompareFiles(string leftFileName, string rightFileName)
+        {
+            if (this.diffService == null)
+            {
+                return;
+            }
+
+            diffService.OpenComparisonWindow(leftFileName, rightFileName);
         }
 
         #endregion Methods

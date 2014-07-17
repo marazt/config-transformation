@@ -40,6 +40,11 @@ namespace Marazt.ConfigTransformation
         private const string BackupExtension = ".bak";
 
         /// <summary>
+        /// The transformation temporary file name
+        /// </summary>
+        private const string TransformationTempFileName = "ConfigTransformationTempFile.tmp";
+
+        /// <summary>
         /// The supported project extensions
         /// </summary>
         private static readonly List<string> SupportedProjectExtensions = new List<string>
@@ -124,7 +129,7 @@ namespace Marazt.ConfigTransformation
         private string GetBackupFileNameOfFile(string fileName)
         {
             // ReSharper disable once AssignNullToNotNullAttribute
-            return Path.Combine(Path.GetDirectoryName(fileName), Path.GetFileName(fileName) + BackupExtension);
+            return GetTemporaryFileFullName(fileName + BackupExtension);
         }
 
         /// <summary>
@@ -142,7 +147,7 @@ namespace Marazt.ConfigTransformation
         /// Deletes the backup file.
         /// </summary>
         /// <param name="fileName">Name of the file.</param>
-        private void DeleteBackupFile(string fileName)
+        private void DeleteFile(string fileName)
         {
             File.Delete(fileName);
         }
@@ -150,15 +155,15 @@ namespace Marazt.ConfigTransformation
         /// <summary>
         /// Transforms the specified transofrmation file name.
         /// </summary>
-        /// <param name="transofrmationFileName">Name of the transofrmation file.</param>
+        /// <param name="transformationFileName">Name of the transofrmation file.</param>
         /// <param name="transformationFilePattern">The transformation file pattern.</param>
-        /// <param name="tranformationFileSourceMatchIndex">Index of the tranformation file source match.</param>
-        public void Transform(string transofrmationFileName, string transformationFilePattern, int tranformationFileSourceMatchIndex)
+        /// <param name="transformationFileSourceMatchIndex">Index of the tranformation file source match.</param>
+        public void Transform(string transformationFileName, string transformationFilePattern, int transformationFileSourceMatchIndex)
         {
             string sourceFileName;
 
-            var result = this.CheckTransformationFileAndGetSourceFileFromIt(transofrmationFileName, transformationFilePattern,
-                tranformationFileSourceMatchIndex, out sourceFileName);
+            var result = this.CheckTransformationFileAndGetSourceFileFromIt(transformationFileName, transformationFilePattern,
+                transformationFileSourceMatchIndex, out sourceFileName);
 
             if (!result)
             {
@@ -170,31 +175,93 @@ namespace Marazt.ConfigTransformation
 
             try
             {
-                this.DeleteBackupFile(backupFileName);
-                Logger.LogInfo(string.Format(Resources.DeletionOfBackupFileDone, backupFileName));
+                this.DeleteFile(backupFileName);
+                Logger.LogInfo(string.Format(Resources.DeletionOfTemporaryFileDone, backupFileName));
 
                 this.CreateBackupFileOfFile(sourceFileName, backupFileName);
                 Logger.LogInfo(string.Format(Resources.CopyOfSourceFileDone, sourceFileName, backupFileName));
 
-                result = TransformationManager.Transform(backupFileName, transofrmationFileName, sourceFileName, new TransformationLogger());
+                result = TransformationManager.Transform(backupFileName, transformationFileName, sourceFileName, new TransformationLogger());
                 Logger.LogInfo(result
                     ? string.Format(Resources.TransformationOfFileSuccessfullyDone, backupFileName,
-                        transofrmationFileName, sourceFileName)
-                    : string.Format(Resources.TransformationProcessError, backupFileName, transofrmationFileName,
+                        transformationFileName, sourceFileName)
+                    : string.Format(Resources.TransformationProcessError, backupFileName, transformationFileName,
                         sourceFileName));
 
-                this.DeleteBackupFile(backupFileName);
-                Logger.LogInfo(string.Format(Resources.DeletionOfBackupFileDone, backupFileName));
+                this.DeleteFile(backupFileName);
+                Logger.LogInfo(string.Format(Resources.DeletionOfTemporaryFileDone, backupFileName));
             }
             catch (Exception ex)
             {
-                Logger.LogError(string.Format(Resources.ErrorWhileTransformingFile, backupFileName, transofrmationFileName));
+                Logger.LogError(string.Format(Resources.ErrorWhileTransformingFile, backupFileName, transformationFileName, sourceFileName));
                 Logger.LogError(ex);
             }
 
-
         }
 
+        /// <summary>
+        /// Transforms to temporary file.
+        /// </summary>
+        /// <param name="transformationFileName">Name of the transofrmation file.</param>
+        /// <param name="transformationFilePattern">The transformation file pattern.</param>
+        /// <param name="transformationFileSourceMatchIndex">Index of the tranformation file source match.</param>
+        /// <returns>Name of the source and transformed file if there was no error, otherwise null</returns>
+        public Tuple<string, string> TransformToTemporaryFile(string transformationFileName, string transformationFilePattern, int transformationFileSourceMatchIndex)
+        {
+            string sourceFileName;
+
+            var result = this.CheckTransformationFileAndGetSourceFileFromIt(transformationFileName, transformationFilePattern,
+                transformationFileSourceMatchIndex, out sourceFileName);
+
+            if (!result)
+            {
+                Logger.LogInfo(Resources.InvalidTransformationFileName);
+                return null;
+            }
+
+            var tempTargetFileName = GetTemporaryFileFullName(TransformationTempFileName);
+
+            try
+            {
+                this.DeleteFile(tempTargetFileName);
+                Logger.LogInfo(string.Format(Resources.DeletionOfTemporaryFileDone, tempTargetFileName));
+
+
+                result = TransformationManager.Transform(sourceFileName, transformationFileName, tempTargetFileName, new TransformationLogger());
+
+                if (result)
+                {
+                    Logger.LogInfo(string.Format(Resources.TransformationOfFileSuccessfullyDone, sourceFileName,
+                        transformationFileName, tempTargetFileName));
+                    return new Tuple<string, string>(sourceFileName, tempTargetFileName);
+                }
+
+                //else error
+                Logger.LogInfo(string.Format(Resources.TransformationProcessError, sourceFileName, transformationFileName,
+                    tempTargetFileName));
+
+                return null;
+
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(string.Format(Resources.ErrorWhileTransformingFile, sourceFileName, transformationFileName, tempTargetFileName));
+                Logger.LogError(ex);
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the full name of the temporary file.
+        /// </summary>
+        /// <param name="fileName">Name of the file.</param>
+        /// <returns>Full name of the temporary file</returns>
+        private static string GetTemporaryFileFullName(string fileName)
+        {
+            // ReSharper disable once AssignNullToNotNullAttribute
+            return Path.Combine(Path.GetTempPath(), Path.GetFileName(fileName));
+        }
 
         #endregion Methods
 
