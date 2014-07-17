@@ -8,6 +8,17 @@
   <PropertyGroup>
     <ApplicationIcon>transform2.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Deploy|AnyCPU'">
+    <OutputPath>bin\Deploy\</OutputPath>
+    <DefineConstants>CODE_ANALYSIS;TRACE</DefineConstants>
+    <DocumentationFile>bin\Release\ConfigTransformation.XML</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -202,6 +213,18 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
+  <PropertyGroup>
+    <PostBuildEvent>if "$(ConfigurationName)" == "Deploy" ("C:\Program Files (x86)\Microsoft Visual Studio 11.0\PreEmptive Solutions\Dotfuscator and Analytics Community Edition\Dotfuscator.exe"  "$(ProjectDir)Dotfuscator-Deploy.xml"
+copy  "$(TargetDir)$(TargetName).vsix" "$(TargetDir)$(TargetName).zip"
+for /R "$(TargetDir)\Dotfuscated" %25%25f in (*.dll) do "7z.exe" a "$(TargetDir)$(TargetName).zip" "%25%25f"
+copy /Y  "$(TargetDir)$(TargetName).zip" "$(TargetDir)$(TargetName).vsix"
+rmdir /Q /S "$(TargetDir)\Dotfuscated"
+rm "$(TargetDir)$(TargetName).zip" )</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

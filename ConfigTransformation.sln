@@ -16,19 +16,26 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Deploy|Any CPU = Deploy|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{5C30C034-4B04-4963-82CC-B64E66F00252}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5C30C034-4B04-4963-82CC-B64E66F00252}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C30C034-4B04-4963-82CC-B64E66F00252}.Deploy|Any CPU.ActiveCfg = Deploy|Any CPU
+		{5C30C034-4B04-4963-82CC-B64E66F00252}.Deploy|Any CPU.Build.0 = Deploy|Any CPU
 		{5C30C034-4B04-4963-82CC-B64E66F00252}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C30C034-4B04-4963-82CC-B64E66F00252}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BB40BD6F-3211-472A-BB27-8AE05FC246F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BB40BD6F-3211-472A-BB27-8AE05FC246F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB40BD6F-3211-472A-BB27-8AE05FC246F1}.Deploy|Any CPU.ActiveCfg = Deploy|Any CPU
+		{BB40BD6F-3211-472A-BB27-8AE05FC246F1}.Deploy|Any CPU.Build.0 = Deploy|Any CPU
 		{BB40BD6F-3211-472A-BB27-8AE05FC246F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB40BD6F-3211-472A-BB27-8AE05FC246F1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{666BFA2F-F452-4C0D-A564-204B667810A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{666BFA2F-F452-4C0D-A564-204B667810A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{666BFA2F-F452-4C0D-A564-204B667810A8}.Deploy|Any CPU.ActiveCfg = Deploy|Any CPU
+		{666BFA2F-F452-4C0D-A564-204B667810A8}.Deploy|Any CPU.Build.0 = Deploy|Any CPU
 		{666BFA2F-F452-4C0D-A564-204B667810A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{666BFA2F-F452-4C0D-A564-204B667810A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
@@ -36,13 +43,13 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		ConfigurationFilter = 
-		AssemblyInfoFilePath = Properties\AssemblyInfo.cs
-		UpdateAssemblyVersion = True
-		UpdateAssemblyFileVersion = True
-		UpdateAssemblyInfoVersion = True
-		AssemblyVersionSettings = None.None.DateStamp.TimeStamp
-		AssemblyFileVersionSettings = None.None.DateStamp.TimeStamp
 		AssemblyInfoVersionSettings = None.None.DateStamp.TimeStamp
+		AssemblyFileVersionSettings = None.None.DateStamp.TimeStamp
+		AssemblyVersionSettings = None.None.DateStamp.TimeStamp
+		UpdateAssemblyInfoVersion = True
+		UpdateAssemblyFileVersion = True
+		UpdateAssemblyVersion = True
+		AssemblyInfoFilePath = Properties\AssemblyInfo.cs
+		ConfigurationFilter = 
 	EndGlobalSection
 EndGlobal
