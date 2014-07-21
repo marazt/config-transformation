@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.ComponentModel.Design;
-using EnvDTE;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Shell;
@@ -100,7 +99,7 @@ namespace Marazt.ConfigTransformation
             base.Initialize();
 
             // Add our command handlers for menu (commands must exist in the .vsct file)
-            var mcs = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
+            var mcs = DteHelper.GetServiceIstanceOfInterface<IMenuCommandService, OleMenuCommandService>();
             if (null != mcs)
             {
                 // Create the command for transfomration
@@ -118,8 +117,26 @@ namespace Marazt.ConfigTransformation
 
             }
 
-            this.diffService = GetService(typeof(SVsDifferenceService)) as IVsDifferenceService;
+            this.diffService = DteHelper.GetServiceIstanceOfInterface<SVsDifferenceService, IVsDifferenceService>();
         }
+
+
+
+
+        /// <summary>
+        /// Determines whether [is transformation file] [the specified file name].
+        /// </summary>
+        /// <param name="fileName">Name of the file.</param>
+        /// <returns>[True] if file is transformation file, otherwise [False]</returns>
+        private bool IsTransformationFile(string fileName)
+        {
+            return transformationProvider.IsTransformationFile(fileName,
+                DteHelper.GetPropertyValue<string>(ConfigTransformation, General, OptionsPage.TransfomationFileNameRegexpPropertyName),
+                DteHelper.GetPropertyValue<int>(ConfigTransformation, General, OptionsPage.SourceFileRegexpMatchIndexPropertyName));
+        }
+
+
+        #endregion
 
         /// <summary>
         /// Handles the BeforeQueryStatus event of the menuTransformationCommands control.
@@ -139,22 +156,24 @@ namespace Marazt.ConfigTransformation
                 menuCommand.Visible = false;
                 menuCommand.Enabled = false;
 
+                // ReSharper disable once RedundantAssignment
                 IVsHierarchy hierarchy = null;
+                // ReSharper disable once RedundantAssignment
                 uint itemid = VSConstants.VSITEMID_NIL;
 
-                if (!IsSingleProjectItemSelection(out hierarchy, out itemid))
+                if (!SolutionHelper.IsSingleProjectItemSelection(out hierarchy, out itemid))
                 {
                     return;
                 }
 
 
                 var vsProject = (IVsProject)hierarchy;
-                if (!ProjectSupportsTransforms(vsProject))
+                if (!SolutionHelper.ProjectSupportsTransforms(vsProject, this.transformationProvider))
                 {
                     return;
                 }
 
-                var fileName = GetFileNameFromItem(vsProject, itemid);
+                var fileName = SolutionHelper.GetFileNameFromItem(vsProject, itemid);
                 if (fileName == null || !IsTransformationFile(fileName))
                 {
                     return;
@@ -164,123 +183,6 @@ namespace Marazt.ConfigTransformation
                 menuCommand.Enabled = true;
             }
         }
-
-
-        /// <summary>
-        /// Gets the file name from item.
-        /// </summary>
-        /// <param name="project">The project.</param>
-        /// <param name="itemid">The itemid.</param>
-        /// <returns>Full name of the file of the item</returns>
-        private static string GetFileNameFromItem(IVsProject project, uint itemid)
-        {
-            string itemFullPath = null;
-
-            if (ErrorHandler.Failed(project.GetMkDocument(itemid, out itemFullPath)))
-            {
-                return null;
-            }
-
-            return itemFullPath;
-
-        }
-        private bool IsTransformationFile(string fileName)
-        {
-            return transformationProvider.IsTransformationFile(fileName,
-                GetPropertyValue<string>(OptionsPage.TransfomationFileNameRegexpPropertyName),
-                GetPropertyValue<int>(OptionsPage.SourceFileRegexpMatchIndexPropertyName));
-        }
-
-        private bool ProjectSupportsTransforms(IVsProject project)
-        {
-            string projectFullPath = null;
-            if (ErrorHandler.Failed(project.GetMkDocument(VSConstants.VSITEMID_ROOT, out projectFullPath)))
-            {
-                return false;
-            }
-
-            return transformationProvider.IsProjectSupported(projectFullPath);
-
-        }
-
-        /// <summary>
-        /// Determines whether [is single project item selection] [the specified hierarchy].
-        /// </summary>
-        /// <param name="hierarchy">The hierarchy.</param>
-        /// <param name="itemid">The itemid.</param>
-        /// <returns></returns>
-        private static bool IsSingleProjectItemSelection(out IVsHierarchy hierarchy, out uint itemid)
-        {
-            hierarchy = null;
-            itemid = VSConstants.VSITEMID_NIL;
-            int hierarchySelection = VSConstants.S_OK;
-
-            var monitorSelection = GetGlobalService(typeof(SVsShellMonitorSelection)) as IVsMonitorSelection;
-            var solution = GetGlobalService(typeof(SVsSolution)) as IVsSolution;
-            if (monitorSelection == null || solution == null)
-            {
-                return false;
-            }
-
-            IVsMultiItemSelect multiItemSelect = null;
-            IntPtr hierarchyPtr = IntPtr.Zero;
-            IntPtr selectionContainerPtr = IntPtr.Zero;
-
-            try
-            {
-                hierarchySelection = monitorSelection.GetCurrentSelection(out hierarchyPtr, out itemid, out multiItemSelect, out selectionContainerPtr);
-
-                if (ErrorHandler.Failed(hierarchySelection) || hierarchyPtr == IntPtr.Zero || itemid == VSConstants.VSITEMID_NIL)
-                {
-                    // there is no selection
-                    return false;
-                }
-
-                // multiple items are selected
-                if (multiItemSelect != null)
-                {
-                    return false;
-                }
-
-                // there is a hierarchy root node selected, thus it is not a single item inside a project
-
-                if (itemid == VSConstants.VSITEMID_ROOT)
-                {
-                    return false;
-                }
-
-                hierarchy = Marshal.GetObjectForIUnknown(hierarchyPtr) as IVsHierarchy;
-                if (hierarchy == null)
-                {
-                    return false;
-                }
-
-                var guidProjectID = Guid.Empty;
-
-                if (ErrorHandler.Failed(solution.GetGuidOfProject(hierarchy, out guidProjectID)))
-                {
-                    return false; // hierarchy is not a project inside the Solution if it does not have a ProjectID Guid
-                }
-
-                // if we got this far then there is a single project item selected
-                return true;
-            }
-            finally
-            {
-                if (selectionContainerPtr != IntPtr.Zero)
-                {
-                    Marshal.Release(selectionContainerPtr);
-                }
-
-                if (hierarchyPtr != IntPtr.Zero)
-                {
-                    Marshal.Release(hierarchyPtr);
-                }
-            }
-        }
-
-        #endregion
-
 
         /// <summary>
         /// This function is the callback used to execute a command when the a menu item is clicked.
@@ -296,8 +198,9 @@ namespace Marazt.ConfigTransformation
                 return;
             }
 
-            transformationProvider.Transform(fileName, GetPropertyValue<string>(OptionsPage.TransfomationFileNameRegexpPropertyName),
-             GetPropertyValue<int>(OptionsPage.SourceFileRegexpMatchIndexPropertyName));
+            transformationProvider.Transform(fileName,
+                DteHelper.GetPropertyValue<string>(ConfigTransformation, General, OptionsPage.TransfomationFileNameRegexpPropertyName),
+              DteHelper.GetPropertyValue<int>(ConfigTransformation, General, OptionsPage.SourceFileRegexpMatchIndexPropertyName));
 
         }
 
@@ -316,8 +219,9 @@ namespace Marazt.ConfigTransformation
             }
 
 
-            var files = transformationProvider.TransformToTemporaryFile(fileName, GetPropertyValue<string>(OptionsPage.TransfomationFileNameRegexpPropertyName),
-                   GetPropertyValue<int>(OptionsPage.SourceFileRegexpMatchIndexPropertyName));
+            var files = transformationProvider.TransformToTemporaryFile(fileName,
+                DteHelper.GetPropertyValue<string>(ConfigTransformation, General, OptionsPage.TransfomationFileNameRegexpPropertyName),
+                   DteHelper.GetPropertyValue<int>(ConfigTransformation, General, OptionsPage.SourceFileRegexpMatchIndexPropertyName));
 
             if (files == null)
             {
@@ -336,22 +240,23 @@ namespace Marazt.ConfigTransformation
         private bool IsCorrectItemForTransformationOperationsSelected(out string itemFullPath)
         {
             itemFullPath = null;
-            IVsHierarchy hierarchy = null;
+            IVsHierarchy hierarchy;
+            // ReSharper disable once RedundantAssignment
             uint itemid = VSConstants.VSITEMID_NIL;
 
             //TODO: It is needed?
-            if (!IsSingleProjectItemSelection(out hierarchy, out itemid))
+            if (!SolutionHelper.IsSingleProjectItemSelection(out hierarchy, out itemid))
             {
                 return false;
             }
 
             var vsProject = (IVsProject)hierarchy;
-            if (!ProjectSupportsTransforms(vsProject))
+            if (!SolutionHelper.ProjectSupportsTransforms(vsProject, this.transformationProvider))
             {
                 return false;
             }
 
-            string projectFullPath = null;
+            string projectFullPath;
             if (ErrorHandler.Failed(vsProject.GetMkDocument(VSConstants.VSITEMID_ROOT, out projectFullPath)))
             {
                 return false;
@@ -372,24 +277,6 @@ namespace Marazt.ConfigTransformation
             return true;
         }
 
-        /// <summary>
-        /// Gets the property value.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="propertyName">Name of the property.</param>
-        /// <returns>Value of the options property</returns>
-        private static T GetPropertyValue<T>(string propertyName)
-        {
-            var dte = (DTE)GetGlobalService(typeof(DTE));
-            var props = dte.Properties[ConfigTransformation, General];
-            var val = props.Item(propertyName).Value;
-            if (val == null)
-            {
-                return default(T);
-            }
-
-            return (T)val;
-        }
 
 
 

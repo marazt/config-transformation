@@ -143,6 +143,7 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTEHelper.cs" />
     <Compile Include="Guids.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="OptionsPage.cs">
@@ -157,6 +158,7 @@
     <Compile Include="ConfigTransformationPackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PkgCmdID.cs" />
+    <Compile Include="SolutionHelper.cs" />
     <Compile Include="TransformationLogger.cs" />
     <Compile Include="TransformationProvider.cs" />
     <Compile Include="WinFormsHelper.cs" />
