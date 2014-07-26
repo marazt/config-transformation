@@ -2,7 +2,7 @@
 using EnvDTE80;
 using Microsoft.VisualStudio.Shell;
 
-namespace Marazt.ConfigTransformation
+namespace Marazt.ConfigTransformation.Helpers
 {
     /// <summary>
     /// DTE Helper class

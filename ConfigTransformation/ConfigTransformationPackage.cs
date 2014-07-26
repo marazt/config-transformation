@@ -1,8 +1,7 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.ComponentModel.Design;
-using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.Shell.Interop;
+using Marazt.ConfigTransformation.Commands;
+using Marazt.ConfigTransformation.Helpers;
 using Microsoft.VisualStudio.Shell;
 
 namespace Marazt.ConfigTransformation
@@ -35,33 +34,17 @@ namespace Marazt.ConfigTransformation
     //http://msdn.microsoft.com/en-us/library/bb166195.aspx
     //http://msdn.microsoft.com/en-us/library/bb166553.aspx
     //http://code.msdn.microsoft.com/VSSDK-IDE-Sample-Options-f152f574
-    [ProvideOptionPageAttribute(typeof(OptionsPage), ConfigTransformation, General, 0, 0, true)]
+    [ProvideOptionPageAttribute(typeof(OptionsPage), AppConstants.ConfigTransformation, AppConstants.General, 0, 0, true)]
     public sealed class ConfigTransformationPackage : Package
     {
 
-        #region Constants
 
-        /// <summary>
-        /// The configuration transformation
-        /// </summary>
-        private const string ConfigTransformation = "Config Transformation";
-
-        /// <summary>
-        /// The general
-        /// </summary>
-        private const string General = "General";
-
-        #endregion Constants
 
 
         #region Properties
 
-        /// <summary>
-        /// The transformation provider
-        /// </summary>
-        private readonly TransformationProvider transformationProvider;
 
-        private IVsDifferenceService diffService;
+
 
         #endregion Properties
 
@@ -75,9 +58,10 @@ namespace Marazt.ConfigTransformation
         /// not sited yet inside Visual Studio environment. The place to do all the other
         /// initialization is the Initialize method.
         /// </summary>
+        // ReSharper disable once EmptyConstructor
         public ConfigTransformationPackage()
         {
-            this.transformationProvider = new TransformationProvider();
+
         }
 
         #endregion Constructors
@@ -103,197 +87,43 @@ namespace Marazt.ConfigTransformation
             if (null != mcs)
             {
                 // Create the command for transfomration
-                var transformMenuCommandID = new CommandID(GuidList.guidConfigTransformationCmdSet, (int)PkgCmdIDList.cmdidCtxMenuTransformItem);
-                var transformMenuItem = new OleMenuCommand(TransformMenuItemCallback, transformMenuCommandID);
-                transformMenuItem.BeforeQueryStatus += MenuTransformationCommandsBeforeQueryStatus;
-                mcs.AddCommand(transformMenuItem);
+                this.RegisterMenuCommand(new ProcessTransformartionCommand(), mcs);
 
 
                 // Create the command for comparison
-                var comparisonMenuCommandID = new CommandID(GuidList.guidConfigTransformationCmdSet, (int)PkgCmdIDList.cmdidCtxMenuComparisonItem);
-                var comparisonMenuItem = new OleMenuCommand(CompareFilesMenuItemCallback, comparisonMenuCommandID);
-                comparisonMenuItem.BeforeQueryStatus += MenuTransformationCommandsBeforeQueryStatus;
-                mcs.AddCommand(comparisonMenuItem);
+                this.RegisterMenuCommand(new CompareFilesCommand(), mcs);
 
             }
 
-            this.diffService = DteHelper.GetServiceIstanceOfInterface<SVsDifferenceService, IVsDifferenceService>();
+
+
+
         }
-
-
-
 
         /// <summary>
-        /// Determines whether [is transformation file] [the specified file name].
+        /// Registers the menu command.
         /// </summary>
-        /// <param name="fileName">Name of the file.</param>
-        /// <returns>[True] if file is transformation file, otherwise [False]</returns>
-        private bool IsTransformationFile(string fileName)
+        /// <param name="command">The command.</param>
+        /// <param name="menuService">The menu service.</param>
+        private void RegisterMenuCommand(IExtensionCommand command, OleMenuCommandService menuService)
         {
-            return transformationProvider.IsTransformationFile(fileName,
-                DteHelper.GetPropertyValue<string>(ConfigTransformation, General, OptionsPage.TransfomationFileNameRegexpPropertyName),
-                DteHelper.GetPropertyValue<int>(ConfigTransformation, General, OptionsPage.SourceFileRegexpMatchIndexPropertyName));
+            var comparisonMenuCommandID = new CommandID(command.CmdSetGuid, command.CmdID);
+            var comparisonMenuItem = new OleMenuCommand(command.CommandCallback, comparisonMenuCommandID);
+            comparisonMenuItem.BeforeQueryStatus += command.BeforeQueryStatus;
+            menuService.AddCommand(comparisonMenuItem);
         }
+
+
 
 
         #endregion
 
-        /// <summary>
-        /// Handles the BeforeQueryStatus event of the menuTransformationCommands control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void MenuTransformationCommandsBeforeQueryStatus(object sender, EventArgs e)
-        {
-
-
-            // get the menu that fired the event
-            var menuCommand = sender as OleMenuCommand;
-            if (menuCommand != null)
-            {
-
-                // start by assuming that the menu will not be shown
-                menuCommand.Visible = false;
-                menuCommand.Enabled = false;
-
-                // ReSharper disable once RedundantAssignment
-                IVsHierarchy hierarchy = null;
-                // ReSharper disable once RedundantAssignment
-                uint itemid = VSConstants.VSITEMID_NIL;
-
-                if (!SolutionHelper.IsSingleProjectItemSelection(out hierarchy, out itemid))
-                {
-                    return;
-                }
-
-
-                var vsProject = (IVsProject)hierarchy;
-                if (!SolutionHelper.ProjectSupportsTransforms(vsProject, this.transformationProvider))
-                {
-                    return;
-                }
-
-                var fileName = SolutionHelper.GetFileNameFromItem(vsProject, itemid);
-                if (fileName == null || !IsTransformationFile(fileName))
-                {
-                    return;
-                }
-
-                menuCommand.Visible = true;
-                menuCommand.Enabled = true;
-            }
-        }
-
-        /// <summary>
-        /// This function is the callback used to execute a command when the a menu item is clicked.
-        /// See the Initialize method to see how the menu item is associated to this function using
-        /// the OleMenuCommandService service and the MenuCommand class.
-        /// </summary>
-        private void TransformMenuItemCallback(object sender, EventArgs e)
-        {
-            string fileName;
-            var result = IsCorrectItemForTransformationOperationsSelected(out fileName);
-            if (!result)
-            {
-                return;
-            }
-
-            transformationProvider.Transform(fileName,
-                DteHelper.GetPropertyValue<string>(ConfigTransformation, General, OptionsPage.TransfomationFileNameRegexpPropertyName),
-              DteHelper.GetPropertyValue<int>(ConfigTransformation, General, OptionsPage.SourceFileRegexpMatchIndexPropertyName));
-
-        }
-
-        /// <summary>
-        /// Compares the files menu item callback.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void CompareFilesMenuItemCallback(object sender, EventArgs e)
-        {
-            string fileName;
-            var result = IsCorrectItemForTransformationOperationsSelected(out fileName);
-            if (!result)
-            {
-                return;
-            }
-
-
-            var files = transformationProvider.TransformToTemporaryFile(fileName,
-                DteHelper.GetPropertyValue<string>(ConfigTransformation, General, OptionsPage.TransfomationFileNameRegexpPropertyName),
-                   DteHelper.GetPropertyValue<int>(ConfigTransformation, General, OptionsPage.SourceFileRegexpMatchIndexPropertyName));
-
-            if (files == null)
-            {
-                return;
-            }
-
-            this.CompareFiles(files.Item1, files.Item2);
-
-        }
-
-        /// <summary>
-        /// Determines whether [is correct item for transformation operations selected] [the specified item full path].
-        /// </summary>
-        /// <param name="itemFullPath">The item full path.</param>
-        /// <returns>[True] if correct file for transformation is selected, otherwise [False]</returns>
-        private bool IsCorrectItemForTransformationOperationsSelected(out string itemFullPath)
-        {
-            itemFullPath = null;
-            IVsHierarchy hierarchy;
-            // ReSharper disable once RedundantAssignment
-            uint itemid = VSConstants.VSITEMID_NIL;
-
-            //TODO: It is needed?
-            if (!SolutionHelper.IsSingleProjectItemSelection(out hierarchy, out itemid))
-            {
-                return false;
-            }
-
-            var vsProject = (IVsProject)hierarchy;
-            if (!SolutionHelper.ProjectSupportsTransforms(vsProject, this.transformationProvider))
-            {
-                return false;
-            }
-
-            string projectFullPath;
-            if (ErrorHandler.Failed(vsProject.GetMkDocument(VSConstants.VSITEMID_ROOT, out projectFullPath)))
-            {
-                return false;
-            }
-
-            //var buildPropertyStorage = vsProject as IVsBuildPropertyStorage;
-            //if (buildPropertyStorage == null)
-            //{
-            //    return false;
-            //}
-
-
-            if (ErrorHandler.Failed(vsProject.GetMkDocument(itemid, out itemFullPath)))
-            {
-                return false;
-            }
-
-            return true;
-        }
 
 
 
 
-        /// <summary>
-        /// Compares the files.
-        /// </summary>
-        /// <param name="leftFileName">Name of the left file.</param>
-        /// <param name="rightFileName">Name of the right file.</param>
-        private void CompareFiles(string leftFileName, string rightFileName)
-        {
-            if (this.diffService == null)
-            {
-                return;
-            }
 
-            diffService.OpenComparisonWindow(leftFileName, rightFileName);
-        }
+
 
         #endregion Methods
 

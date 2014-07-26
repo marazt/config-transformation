@@ -65,7 +65,7 @@ namespace Marazt.ConfigTransformation
         /// </summary>
         /// <param name="projectExtension">The project extension.</param>
         /// <returns>[True] if project is supported, otherwise [False]</returns>
-        public bool IsProjectSupported(string projectExtension)
+        public static bool IsProjectSupported(string projectExtension)
         {
             if (string.IsNullOrEmpty(projectExtension))
             {
@@ -85,7 +85,7 @@ namespace Marazt.ConfigTransformation
         /// <returns>
         /// [True] if transformation file match pattern, otherwise [False]
         /// </returns>
-        private bool CheckTransformationFileAndGetSourceFileFromIt(string transformationFileName, string transformationFilePattern,
+        private static bool CheckTransformationFileAndGetSourceFileFromIt(string transformationFileName, string transformationFilePattern,
             int tranformationFileSourceMatchIndex, out string sourceFileName)
         {
             sourceFileName = null;
@@ -114,10 +114,10 @@ namespace Marazt.ConfigTransformation
         /// <returns>
         /// [True] if transformation file match pattern, otherwise [False]
         /// </returns>
-        public bool IsTransformationFile(string fileName, string transformationFilePattern, int tranformationFileSourceMatchIndex)
+        public static bool IsTransformationFile(string fileName, string transformationFilePattern, int tranformationFileSourceMatchIndex)
         {
             string sourceFileName;
-            return this.CheckTransformationFileAndGetSourceFileFromIt(fileName, transformationFilePattern,
+            return CheckTransformationFileAndGetSourceFileFromIt(fileName, transformationFilePattern,
                 tranformationFileSourceMatchIndex, out sourceFileName);
         }
 
@@ -126,7 +126,7 @@ namespace Marazt.ConfigTransformation
         /// </summary>
         /// <param name="fileName">Name of the file.</param>
         /// <returns>Name of the backup source file</returns>
-        private string GetBackupFileNameOfFile(string fileName)
+        private static string GetBackupFileNameOfFile(string fileName)
         {
             // ReSharper disable once AssignNullToNotNullAttribute
             return GetTemporaryFileFullName(fileName + BackupExtension);
@@ -137,7 +137,7 @@ namespace Marazt.ConfigTransformation
         /// </summary>
         /// <param name="fileName">Name of the file.</param>
         /// <param name="backupFileName">Name of the backup file.</param>
-        private void CreateBackupFileOfFile(string fileName, string backupFileName)
+        private static void CreateBackupFileOfFile(string fileName, string backupFileName)
         {
             File.Copy(fileName, backupFileName, true);
 
@@ -147,7 +147,7 @@ namespace Marazt.ConfigTransformation
         /// Deletes the backup file.
         /// </summary>
         /// <param name="fileName">Name of the file.</param>
-        private void DeleteFile(string fileName)
+        private static void DeleteFile(string fileName)
         {
             File.Delete(fileName);
         }
@@ -158,11 +158,11 @@ namespace Marazt.ConfigTransformation
         /// <param name="transformationFileName">Name of the transofrmation file.</param>
         /// <param name="transformationFilePattern">The transformation file pattern.</param>
         /// <param name="transformationFileSourceMatchIndex">Index of the tranformation file source match.</param>
-        public void Transform(string transformationFileName, string transformationFilePattern, int transformationFileSourceMatchIndex)
+        public static void Transform(string transformationFileName, string transformationFilePattern, int transformationFileSourceMatchIndex)
         {
             string sourceFileName;
 
-            var result = this.CheckTransformationFileAndGetSourceFileFromIt(transformationFileName, transformationFilePattern,
+            var result = CheckTransformationFileAndGetSourceFileFromIt(transformationFileName, transformationFilePattern,
                 transformationFileSourceMatchIndex, out sourceFileName);
 
             if (!result)
@@ -171,14 +171,14 @@ namespace Marazt.ConfigTransformation
                 return;
             }
 
-            var backupFileName = this.GetBackupFileNameOfFile(sourceFileName);
+            var backupFileName = GetBackupFileNameOfFile(sourceFileName);
 
             try
             {
-                this.DeleteFile(backupFileName);
+                DeleteFile(backupFileName);
                 Logger.LogInfo(string.Format(Resources.DeletionOfTemporaryFileDone, backupFileName));
 
-                this.CreateBackupFileOfFile(sourceFileName, backupFileName);
+                CreateBackupFileOfFile(sourceFileName, backupFileName);
                 Logger.LogInfo(string.Format(Resources.CopyOfSourceFileDone, sourceFileName, backupFileName));
 
                 result = TransformationManager.Transform(backupFileName, transformationFileName, sourceFileName, new TransformationLogger());
@@ -188,7 +188,7 @@ namespace Marazt.ConfigTransformation
                     : string.Format(Resources.TransformationProcessError, backupFileName, transformationFileName,
                         sourceFileName));
 
-                this.DeleteFile(backupFileName);
+                DeleteFile(backupFileName);
                 Logger.LogInfo(string.Format(Resources.DeletionOfTemporaryFileDone, backupFileName));
             }
             catch (Exception ex)
@@ -206,11 +206,11 @@ namespace Marazt.ConfigTransformation
         /// <param name="transformationFilePattern">The transformation file pattern.</param>
         /// <param name="transformationFileSourceMatchIndex">Index of the tranformation file source match.</param>
         /// <returns>Name of the source and transformed file if there was no error, otherwise null</returns>
-        public Tuple<string, string> TransformToTemporaryFile(string transformationFileName, string transformationFilePattern, int transformationFileSourceMatchIndex)
+        public static Tuple<string, string> TransformToTemporaryFile(string transformationFileName, string transformationFilePattern, int transformationFileSourceMatchIndex)
         {
             string sourceFileName;
 
-            var result = this.CheckTransformationFileAndGetSourceFileFromIt(transformationFileName, transformationFilePattern,
+            var result = CheckTransformationFileAndGetSourceFileFromIt(transformationFileName, transformationFilePattern,
                 transformationFileSourceMatchIndex, out sourceFileName);
 
             if (!result)
@@ -223,7 +223,7 @@ namespace Marazt.ConfigTransformation
 
             try
             {
-                this.DeleteFile(tempTargetFileName);
+                DeleteFile(tempTargetFileName);
                 Logger.LogInfo(string.Format(Resources.DeletionOfTemporaryFileDone, tempTargetFileName));
 
 

@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
 
-namespace Marazt.ConfigTransformation
+namespace Marazt.ConfigTransformation.Helpers
 {
     /// <summary>
     /// Solution Helepr class
@@ -94,11 +94,10 @@ namespace Marazt.ConfigTransformation
         /// Projects the supports transforms.
         /// </summary>
         /// <param name="project">The project.</param>
-        /// <param name="transformationProvider">The transformation provider.</param>
         /// <returns>
         /// [True] if project suppors transformation, otherwise [False]
         /// </returns>
-        public static bool ProjectSupportsTransforms(IVsProject project, TransformationProvider transformationProvider)
+        public static bool ProjectSupportsTransforms(IVsProject project)
         {
             string projectFullPath;
             if (ErrorHandler.Failed(project.GetMkDocument(VSConstants.VSITEMID_ROOT, out projectFullPath)))
@@ -106,7 +105,7 @@ namespace Marazt.ConfigTransformation
                 return false;
             }
 
-            return transformationProvider.IsProjectSupported(projectFullPath);
+            return TransformationProvider.IsProjectSupported(projectFullPath);
         }
 
         /// <summary>
@@ -129,7 +128,50 @@ namespace Marazt.ConfigTransformation
         }
 
 
+        /// <summary>
+        /// Determines whether [is correct item for transformation operations selected] [the specified item full path].
+        /// </summary>
+        /// <param name="itemFullPath">The item full path.</param>
+        /// <returns>[True] if correct file for transformation is selected, otherwise [False]</returns>
+        public static bool IsCorrectItemForTransformationOperationsSelected(out string itemFullPath)
+        {
+            itemFullPath = null;
+            IVsHierarchy hierarchy;
+            // ReSharper disable once RedundantAssignment
+            uint itemid = VSConstants.VSITEMID_NIL;
 
+            //TODO: It is needed?
+            if (!IsSingleProjectItemSelection(out hierarchy, out itemid))
+            {
+                return false;
+            }
+
+            var vsProject = (IVsProject)hierarchy;
+            if (!ProjectSupportsTransforms(vsProject))
+            {
+                return false;
+            }
+
+            string projectFullPath;
+            if (ErrorHandler.Failed(vsProject.GetMkDocument(VSConstants.VSITEMID_ROOT, out projectFullPath)))
+            {
+                return false;
+            }
+
+            //var buildPropertyStorage = vsProject as IVsBuildPropertyStorage;
+            //if (buildPropertyStorage == null)
+            //{
+            //    return false;
+            //}
+
+
+            if (ErrorHandler.Failed(vsProject.GetMkDocument(itemid, out itemFullPath)))
+            {
+                return false;
+            }
+
+            return true;
+        }
 
 
     }
