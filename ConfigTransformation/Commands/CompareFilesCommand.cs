@@ -50,7 +50,7 @@ namespace Marazt.ConfigTransformation.Commands
         /// </summary>
         public CompareFilesCommand()
         {
-            this.diffService = DteHelper.GetServiceIstanceOfInterface<SVsDifferenceService, IVsDifferenceService>();
+            this.diffService = DTEHelper.GetServiceIstanceOfInterface<SVsDifferenceService, IVsDifferenceService>();
         }
 
         #endregion Constructors
@@ -76,8 +76,8 @@ namespace Marazt.ConfigTransformation.Commands
 
 
             var files = TransformationProvider.TransformToTemporaryFile(fileName,
-                DteHelper.GetPropertyValue<string>(AppConstants.ConfigTransformation, AppConstants.General, OptionsPage.TransfomationFileNameRegexpPropertyName),
-                   DteHelper.GetPropertyValue<int>(AppConstants.ConfigTransformation, AppConstants.General, OptionsPage.SourceFileRegexpMatchIndexPropertyName));
+                DTEHelper.GetPropertyValue<string>(AppConstants.ConfigTransformation, AppConstants.General, OptionsPage.TransfomationFileNameRegexpPropertyName),
+                   DTEHelper.GetPropertyValue<int>(AppConstants.ConfigTransformation, AppConstants.General, OptionsPage.SourceFileRegexpMatchIndexPropertyName));
 
             if (files == null)
             {

@@ -84,7 +84,7 @@ namespace Marazt.ConfigTransformation
             base.Initialize();
 
             // Add our command handlers for menu (commands must exist in the .vsct file)
-            var mcs = DteHelper.GetServiceIstanceOfInterface<IMenuCommandService, OleMenuCommandService>();
+            var mcs = DTEHelper.GetServiceIstanceOfInterface<IMenuCommandService, OleMenuCommandService>();
             if (null != mcs)
             {
                 //Register commands

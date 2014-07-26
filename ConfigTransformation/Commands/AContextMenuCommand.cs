@@ -57,9 +57,9 @@ namespace Marazt.ConfigTransformation.Commands
                 // ReSharper disable once RedundantAssignment
                 IVsHierarchy hierarchy = null;
                 // ReSharper disable once RedundantAssignment
-                uint itemid = VSConstants.VSITEMID_NIL;
+                uint itemID = VSConstants.VSITEMID_NIL;
 
-                if (!SolutionHelper.IsSingleProjectItemSelection(out hierarchy, out itemid))
+                if (!SolutionHelper.IsSingleProjectItemSelection(out hierarchy, out itemID))
                 {
                     return;
                 }
@@ -71,7 +71,7 @@ namespace Marazt.ConfigTransformation.Commands
                     return;
                 }
 
-                var fileName = SolutionHelper.GetFileNameFromItem(vsProject, itemid);
+                var fileName = SolutionHelper.GetFileNameFromItem(vsProject, itemID);
                 if (fileName == null || !IsTransformationFile(fileName))
                 {
                     return;
@@ -103,8 +103,8 @@ namespace Marazt.ConfigTransformation.Commands
         private bool IsTransformationFile(string fileName)
         {
             return TransformationProvider.IsTransformationFile(fileName,
-                DteHelper.GetPropertyValue<string>(AppConstants.ConfigTransformation, AppConstants.General, OptionsPage.TransfomationFileNameRegexpPropertyName),
-                DteHelper.GetPropertyValue<int>(AppConstants.ConfigTransformation, AppConstants.General, OptionsPage.SourceFileRegexpMatchIndexPropertyName));
+                DTEHelper.GetPropertyValue<string>(AppConstants.ConfigTransformation, AppConstants.General, OptionsPage.TransfomationFileNameRegexpPropertyName),
+                DTEHelper.GetPropertyValue<int>(AppConstants.ConfigTransformation, AppConstants.General, OptionsPage.SourceFileRegexpMatchIndexPropertyName));
         }
 
         #endregion Methods

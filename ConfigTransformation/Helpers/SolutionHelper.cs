@@ -15,19 +15,19 @@ namespace Marazt.ConfigTransformation.Helpers
         /// Determines whether [is single project item selection] [the specified hierarchy].
         /// </summary>
         /// <param name="hierarchy">The hierarchy.</param>
-        /// <param name="itemid">The itemid.</param>
+        /// <param name="itemID">The itemID.</param>
         /// <returns>[True] if single project item is selected, otherwise [False]</returns>
-        public static bool IsSingleProjectItemSelection(out IVsHierarchy hierarchy, out uint itemid)
+        public static bool IsSingleProjectItemSelection(out IVsHierarchy hierarchy, out uint itemID)
         {
             hierarchy = null;
-            itemid = VSConstants.VSITEMID_NIL;
+            itemID = VSConstants.VSITEMID_NIL;
 
             // ReSharper disable once TooWideLocalVariableScope
             // ReSharper disable once RedundantAssignment
             var hierarchySelection = VSConstants.S_OK;
 
-            var monitorSelection = DteHelper.GetServiceIstanceOfInterface<SVsShellMonitorSelection, IVsMonitorSelection>();
-            var solution = DteHelper.GetServiceIstanceOfInterface<SVsSolution, IVsSolution>();
+            var monitorSelection = DTEHelper.GetServiceIstanceOfInterface<SVsShellMonitorSelection, IVsMonitorSelection>();
+            var solution = DTEHelper.GetServiceIstanceOfInterface<SVsSolution, IVsSolution>();
             if (monitorSelection == null || solution == null)
             {
                 return false;
@@ -39,9 +39,9 @@ namespace Marazt.ConfigTransformation.Helpers
             try
             {
                 IVsMultiItemSelect multiItemSelect;
-                hierarchySelection = monitorSelection.GetCurrentSelection(out hierarchyPtr, out itemid, out multiItemSelect, out selectionContainerPtr);
+                hierarchySelection = monitorSelection.GetCurrentSelection(out hierarchyPtr, out itemID, out multiItemSelect, out selectionContainerPtr);
 
-                if (ErrorHandler.Failed(hierarchySelection) || hierarchyPtr == IntPtr.Zero || itemid == VSConstants.VSITEMID_NIL)
+                if (ErrorHandler.Failed(hierarchySelection) || hierarchyPtr == IntPtr.Zero || itemID == VSConstants.VSITEMID_NIL)
                 {
                     // there is no selection
                     return false;
@@ -55,7 +55,7 @@ namespace Marazt.ConfigTransformation.Helpers
 
                 // there is a hierarchy root node selected, thus it is not a single item inside a project
 
-                if (itemid == VSConstants.VSITEMID_ROOT)
+                if (itemID == VSConstants.VSITEMID_ROOT)
                 {
                     return false;
                 }
@@ -113,7 +113,7 @@ namespace Marazt.ConfigTransformation.Helpers
         /// Gets the file name from item.
         /// </summary>
         /// <param name="project">The project.</param>
-        /// <param name="itemid">The itemid.</param>
+        /// <param name="itemid">The itemID.</param>
         /// <returns>Full name of the file of the item</returns>
         public static string GetFileNameFromItem(IVsProject project, uint itemid)
         {

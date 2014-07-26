@@ -7,13 +7,13 @@ namespace Marazt.ConfigTransformation.Helpers
     /// <summary>
     /// DTE Helper class
     /// </summary>
-    public static class DteHelper
+    internal static class DTEHelper
     {
         /// <summary>
         /// Gets the instance.
         /// </summary>
         /// <returns>DTE instance</returns>
-        public static DTE2 GetInstance()
+        private static DTE2 GetInstance()
         {
             return (DTE2)Package.GetGlobalService(typeof(DTE));
         }
