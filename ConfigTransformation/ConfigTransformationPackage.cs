@@ -87,43 +87,13 @@ namespace Marazt.ConfigTransformation
             var mcs = DteHelper.GetServiceIstanceOfInterface<IMenuCommandService, OleMenuCommandService>();
             if (null != mcs)
             {
-                // Create the command for transfomration
-                this.RegisterMenuCommand(new ProcessTransformartionCommand(), mcs);
-
-
-                // Create the command for comparison
-                this.RegisterMenuCommand(new CompareFilesCommand(), mcs);
-
+                //Register commands
+                CommandHelper.RegisterCommands(mcs);
             }
-
-
-
-
-        }
-
-        /// <summary>
-        /// Registers the menu command.
-        /// </summary>
-        /// <param name="command">The command.</param>
-        /// <param name="menuService">The menu service.</param>
-        private void RegisterMenuCommand(IExtensionCommand command, OleMenuCommandService menuService)
-        {
-            var comparisonMenuCommandID = new CommandID(command.CmdSetGuid, command.CmdID);
-            var comparisonMenuItem = new OleMenuCommand(command.CommandCallback, comparisonMenuCommandID);
-            comparisonMenuItem.BeforeQueryStatus += command.BeforeQueryStatus;
-            menuService.AddCommand(comparisonMenuItem);
         }
 
 
-
-
-        #endregion
-
-
-
-
-
-
+        #endregion Package Members
 
 
         #endregion Methods

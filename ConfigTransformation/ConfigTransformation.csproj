@@ -147,6 +147,7 @@
     <Compile Include="Commands\CompareFilesCommand.cs" />
     <Compile Include="Commands\IExtensionCommand.cs" />
     <Compile Include="AppConstants.cs" />
+    <Compile Include="FileNesting\FileNester.cs" />
     <Compile Include="Helpers\DTEHelper.cs" />
     <Compile Include="Guids.cs" />
     <Compile Include="Logging\Logger.cs" />
