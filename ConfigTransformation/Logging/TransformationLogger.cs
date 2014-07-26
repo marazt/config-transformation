@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Web.XmlTransform;
 
-namespace Marazt.ConfigTransformation
+namespace Marazt.ConfigTransformation.Logging
 {
     /// <summary>
     /// Transformation logger

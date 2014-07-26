@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using Marazt.ConfigTransformation.Transformation;
 using MSVSIP = Microsoft.VisualStudio.Shell;
 
 namespace Marazt.ConfigTransformation

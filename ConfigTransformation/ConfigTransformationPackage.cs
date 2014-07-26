@@ -2,6 +2,7 @@
 using System.ComponentModel.Design;
 using Marazt.ConfigTransformation.Commands;
 using Marazt.ConfigTransformation.Helpers;
+using Marazt.ConfigTransformation.Logging;
 using Microsoft.VisualStudio.Shell;
 
 namespace Marazt.ConfigTransformation

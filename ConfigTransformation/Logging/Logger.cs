@@ -4,7 +4,7 @@ using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
-namespace Marazt.ConfigTransformation
+namespace Marazt.ConfigTransformation.Logging
 {
     /// <summary>
     /// SimpleDebug logger

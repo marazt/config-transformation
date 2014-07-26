@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using Marazt.Commons.Xml;
+using Marazt.ConfigTransformation.Logging;
 
-
-namespace Marazt.ConfigTransformation
+namespace Marazt.ConfigTransformation.Transformation
 {
     /// <summary>
     /// Transformation class
     /// </summary>
-    public class TransformationProvider
+    public static class TransformationProvider
     {
         #region Constants
 

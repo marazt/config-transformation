@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Marazt.ConfigTransformation.Transformation;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
 
