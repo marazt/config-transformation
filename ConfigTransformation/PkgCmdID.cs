@@ -1,6 +1,6 @@
 ﻿// PkgCmdID.cs
 // MUST match PkgCmdID.h
-using System;
+
 
 namespace Marazt.ConfigTransformation
 {
@@ -14,6 +14,7 @@ namespace Marazt.ConfigTransformation
         /// <summary>
         /// The cmdid CTX menu transform item
         /// </summary>
+        // ReSharper disable once InconsistentNaming
         public const uint cmdidCtxMenuTransformItem = 0x100;
 
 
@@ -21,6 +22,7 @@ namespace Marazt.ConfigTransformation
         /// <summary>
         /// The cmdid CTX menu comparison item
         /// </summary>
+        // ReSharper disable once InconsistentNaming
         public const uint cmdidCtxMenuComparisonItem = 0x105;
 
         /// <summary>

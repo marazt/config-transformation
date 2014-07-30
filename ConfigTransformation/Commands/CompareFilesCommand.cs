@@ -67,6 +67,7 @@ namespace Marazt.ConfigTransformation.Commands
         /// <exception cref="System.NotImplementedException"></exception>
         public override void CommandCallback(object sender, EventArgs e)
         {
+
             string fileName;
             var result = SolutionHelper.IsCorrectItemForTransformationOperationsSelected(out fileName);
             if (!result)
@@ -76,8 +77,7 @@ namespace Marazt.ConfigTransformation.Commands
 
 
             var files = TransformationProvider.TransformToTemporaryFile(fileName,
-                DTEHelper.GetPropertyValue<string>(AppConstants.ConfigTransformation, AppConstants.General, OptionsPage.TransfomationFileNameRegexpPropertyName),
-                   DTEHelper.GetPropertyValue<int>(AppConstants.ConfigTransformation, AppConstants.General, OptionsPage.SourceFileRegexpMatchIndexPropertyName));
+                Options.Options.TransfomationFileNameRegexp, Options.Options.SourceFileRegexpMatchIndex);
 
             if (files == null)
             {

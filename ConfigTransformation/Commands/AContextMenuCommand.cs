@@ -103,8 +103,8 @@ namespace Marazt.ConfigTransformation.Commands
         private bool IsTransformationFile(string fileName)
         {
             return TransformationProvider.IsTransformationFile(fileName,
-                DTEHelper.GetPropertyValue<string>(AppConstants.ConfigTransformation, AppConstants.General, OptionsPage.TransfomationFileNameRegexpPropertyName),
-                DTEHelper.GetPropertyValue<int>(AppConstants.ConfigTransformation, AppConstants.General, OptionsPage.SourceFileRegexpMatchIndexPropertyName));
+                Options.Options.TransfomationFileNameRegexp,
+                Options.Options.SourceFileRegexpMatchIndex);
         }
 
         #endregion Methods

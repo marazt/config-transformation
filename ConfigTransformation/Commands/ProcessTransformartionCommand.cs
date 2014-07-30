@@ -52,8 +52,7 @@ namespace Marazt.ConfigTransformation.Commands
             }
 
             TransformationProvider.Transform(fileName,
-                DTEHelper.GetPropertyValue<string>(AppConstants.ConfigTransformation, AppConstants.General, OptionsPage.TransfomationFileNameRegexpPropertyName),
-              DTEHelper.GetPropertyValue<int>(AppConstants.ConfigTransformation, AppConstants.General, OptionsPage.SourceFileRegexpMatchIndexPropertyName));
+              Options.Options.TransfomationFileNameRegexp, Options.Options.SourceFileRegexpMatchIndex);
         }
 
         #endregion Events

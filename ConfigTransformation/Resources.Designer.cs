@@ -124,6 +124,15 @@ namespace Marazt.ConfigTransformation {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nesting files.
+        /// </summary>
+        public static string NestingFiles {
+            get {
+                return ResourceManager.GetString("NestingFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Config Transformation.
         /// </summary>
         public static string OptionsCaption {

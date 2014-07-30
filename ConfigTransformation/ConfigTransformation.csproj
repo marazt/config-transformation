@@ -60,6 +60,9 @@
       <HintPath>..\Libs\Marazt.Commons.Xml.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Practices.RecipeFramework.Library">
+      <HintPath>..\Libs\Microsoft.Practices.RecipeFramework.Library.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.OLE.Interop" />
     <Reference Include="Microsoft.VisualStudio.Shell.Interop" />
     <Reference Include="Microsoft.VisualStudio.Shell.Interop.8.0" />
@@ -144,10 +147,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\AContextMenuCommand.cs" />
+    <Compile Include="Commands\CommandHelper.cs" />
     <Compile Include="Commands\CompareFilesCommand.cs" />
     <Compile Include="Commands\IExtensionCommand.cs" />
     <Compile Include="AppConstants.cs" />
-    <Compile Include="FileNesting\FileNester.cs" />
+    <Compile Include="Extensions\ProjectItemExt.cs" />
+    <Compile Include="FileNesting\ConfigFileNester.cs" />
     <Compile Include="Helpers\DTEHelper.cs" />
     <Compile Include="Guids.cs" />
     <Compile Include="Logging\Logger.cs" />
@@ -155,6 +160,10 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Commands\ProcessTransformartionCommand.cs" />
+    <Compile Include="Options\Options.cs" />
+    <Compile Include="Options\OptionsPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

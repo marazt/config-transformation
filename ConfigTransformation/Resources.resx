@@ -138,6 +138,9 @@
   <data name="InvalidTransformationFileName" xml:space="preserve">
     <value>Invalid tranformation file name</value>
   </data>
+  <data name="NestingFiles" xml:space="preserve">
+    <value>Nesting files</value>
+  </data>
   <data name="OptionsCaption" xml:space="preserve">
     <value>Config Transformation</value>
   </data>

@@ -29,6 +29,12 @@ namespace Marazt.ConfigTransformation.Transformation
         /// </summary>
         public const int TranformationFileSourceMatchIndex = 1;
 
+
+        /// <summary>
+        /// The nest transformation files
+        /// </summary>
+        public const bool NestTransformationFiles = false;
+
         /// <summary>
         /// The configuration extension
         /// </summary>
@@ -85,7 +91,7 @@ namespace Marazt.ConfigTransformation.Transformation
         /// <returns>
         /// [True] if transformation file match pattern, otherwise [False]
         /// </returns>
-        private static bool CheckTransformationFileAndGetSourceFileFromIt(string transformationFileName, string transformationFilePattern,
+        public static bool CheckTransformationFileAndGetSourceFileFromIt(string transformationFileName, string transformationFilePattern,
             int tranformationFileSourceMatchIndex, out string sourceFileName)
         {
             sourceFileName = null;

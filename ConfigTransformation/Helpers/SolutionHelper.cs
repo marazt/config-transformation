@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using EnvDTE;
 using Marazt.ConfigTransformation.Transformation;
+using Microsoft.Practices.RecipeFramework.Library;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
+
 
 namespace Marazt.ConfigTransformation.Helpers
 {
@@ -11,6 +14,84 @@ namespace Marazt.ConfigTransformation.Helpers
     /// </summary>
     public static class SolutionHelper
     {
+
+        /// <summary>
+        /// Gets the project.
+        /// </summary>
+        /// <param name="hierarchy">The hierarchy.</param>
+        /// <returns>Project instance of set hierarchy</returns>
+        public static Project GetProjectFromHierarchy(IVsHierarchy hierarchy)
+        {
+            object project;
+            ErrorHandler.ThrowOnFailure(hierarchy.GetProperty(VSConstants.VSITEMID_ROOT,(int)__VSHPROPID.VSHPROPID_ExtObject,out project));
+            return (project as Project);
+
+        }
+
+
+        /// <summary>
+        /// Finds the name of the solution item by.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="recursive">if set to <c>true</c> [recursive].</param>
+        /// <returns>SolutionItem instance of set name or null if not found</returns>
+        public static ProjectItem FindSolutionItemByName(string name, bool recursive)
+        {
+            ProjectItem projectItem = null;
+            foreach (Project project in DTEHelper.GetInstance().Solution.Projects)
+            {
+                projectItem = FindProjectItemInProject(project, name, recursive);
+
+                if (projectItem != null)
+                {
+                    break;
+                }
+            }
+            return projectItem;
+        }
+
+        /// <summary>
+        /// Finds the project item in project.
+        /// </summary>
+        /// <param name="project">The project.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="recursive">if set to <c>true</c> [recursive].</param>
+        /// <returns>ProjectItem instance of set name or null if not found</returns>
+        public static ProjectItem FindProjectItemInProject(Project project, string name, bool recursive)
+        {
+            ProjectItem projectItem = null;
+
+            if (project.Kind != EnvDTE.Constants.vsProjectKindSolutionItems)
+            {
+                if (project.ProjectItems != null && project.ProjectItems.Count > 0)
+                {
+                    projectItem = DteHelper.FindItemByName(project.ProjectItems, name, recursive);
+                }
+            }
+            else
+            {
+                // if solution folder, one of its ProjectItems might be a real project
+                foreach (ProjectItem item in project.ProjectItems)
+                {
+                    var realProject = item.Object as Project;
+
+                    if (realProject != null)
+                    {
+                        projectItem = FindProjectItemInProject(realProject, name, recursive);
+
+                        if (projectItem != null)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return projectItem;
+        }
+
+
+
         /// <summary>
         /// Determines whether [is single project item selection] [the specified hierarchy].
         /// </summary>

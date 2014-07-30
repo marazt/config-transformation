@@ -13,7 +13,7 @@ namespace Marazt.ConfigTransformation.Helpers
         /// Gets the instance.
         /// </summary>
         /// <returns>DTE instance</returns>
-        private static DTE2 GetInstance()
+        public static DTE2 GetInstance()
         {
             return (DTE2)Package.GetGlobalService(typeof(DTE));
         }
@@ -29,7 +29,6 @@ namespace Marazt.ConfigTransformation.Helpers
         {
             return Package.GetGlobalService(typeof(TInterface)) as TInstance;
         }
-
 
 
         /// <summary>
