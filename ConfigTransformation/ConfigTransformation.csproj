@@ -156,9 +156,6 @@
     <Compile Include="Helpers\DTEHelper.cs" />
     <Compile Include="Guids.cs" />
     <Compile Include="Logging\Logger.cs" />
-    <Compile Include="OptionsPage.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Commands\ProcessTransformartionCommand.cs" />
     <Compile Include="Options\Options.cs" />
     <Compile Include="Options\OptionsPage.cs">

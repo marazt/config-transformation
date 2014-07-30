@@ -4,6 +4,7 @@ using Marazt.ConfigTransformation.Commands;
 using Marazt.ConfigTransformation.FileNesting;
 using Marazt.ConfigTransformation.Helpers;
 using Marazt.ConfigTransformation.Logging;
+using Marazt.ConfigTransformation.Options;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -158,15 +159,15 @@ namespace Marazt.ConfigTransformation
         /// </summary>
         private void UnadviseSolutionEvents()
         {
-            if (solution != null)
+            if (this.solution != null)
             {
                 if (this.handleCookie != uint.MaxValue)
                 {
-                    solution.UnadviseSolutionEvents(this.handleCookie);
+                    this.solution.UnadviseSolutionEvents(this.handleCookie);
                     this.handleCookie = uint.MaxValue;
                 }
 
-                solution = null;
+                this.solution = null;
             }
         }
 
