@@ -75,22 +75,33 @@ namespace Marazt.ConfigTransformation.FileNesting
         {
             foreach (ProjectItem projectItem in projectItems)
             {
-                string configFileName;
+                string transFileName;
 
-                var transFileName = Path.GetFileName(projectItem.GetFullPath());
-
-                if (TransformationProvider.CheckTransformationFileAndGetSourceFileFromIt(transFileName,
+                if (projectItem.TryGetPropertyValue(ProjectItemExt.FullPathProperty, out transFileName))
+                {
+                    transFileName = Path.GetFileName(transFileName);
+                    string configFileName;
+                    if (TransformationProvider.CheckTransformationFileAndGetSourceFileFromIt(transFileName,
                   Options.Options.TransfomationFileNameRegexp, Options.Options.SourceFileRegexpMatchIndex,
                     out configFileName))
-                {
-                    var configItem = DteHelper.FindItemByName(projectItems, configFileName, true);
-                    var itemToBeNested = DteHelper.FindItemByName(projectItems, transFileName, true);
+                    {
+                        var configItem = DteHelper.FindItemByName(projectItems, configFileName, true);
+                        var itemToBeNested = DteHelper.FindItemByName(projectItems, transFileName, true);
 
+                        if (configItem == null || itemToBeNested == null)
+                        {
+                            continue;
+                        }
 
-                    // ReSharper disable once UnusedVariable
-                    ProjectItem pitn = configItem.ProjectItems.AddFromFileCopy(itemToBeNested.GetFullPath());
+                        // ReSharper disable once UnusedVariable
+                        var pitn = configItem.ProjectItems.AddFromFile(itemToBeNested.GetFullPath());
+                        string itemType;
+                        if (itemToBeNested.TryGetPropertyValue(ProjectItemExt.ItemTypeProperty, out itemType))
+                        {
+                            pitn.TrySetPropertyValue(ProjectItemExt.ItemTypeProperty, itemType);
+                        }
 
-
+                    }
                 }
             }
         }
