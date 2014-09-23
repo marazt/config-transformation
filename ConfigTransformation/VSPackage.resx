@@ -132,7 +132,7 @@
     <value>ConfigTransformation</value>
   </data>
   <data name="112" xml:space="preserve">
-    <value>TODO: XXX</value>
+    <value>Extension which enables ability to transform various config file even there does not exist build definition for the transformation file. Supports all .NET projects even WebSites.</value>
   </data>
   <data name="400" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\Package.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

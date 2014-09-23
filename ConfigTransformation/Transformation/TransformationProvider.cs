@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Windows;
 using Marazt.Commons.Xml;
 using Marazt.ConfigTransformation.Logging;
 
@@ -147,6 +148,39 @@ namespace Marazt.ConfigTransformation.Transformation
         {
             File.Copy(fileName, backupFileName, true);
 
+            //var attributes = File.GetAttributes(backupFileName);
+
+            //if ((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+            //{
+            //    // Make the file RW
+            //    attributes = RemoveAttribute(attributes, FileAttributes.ReadOnly);
+            //    File.SetAttributes(backupFileName, attributes);
+
+            //} 
+
+        }
+
+
+        ///// <summary>
+        ///// Removes the attribute.
+        ///// </summary>
+        ///// <param name="attributes">The attributes.</param>
+        ///// <param name="attributesToRemove">The attributes to remove.</param>
+        ///// <returns>Attributes of the file</returns>
+        //private static FileAttributes RemoveAttribute(FileAttributes attributes, FileAttributes attributesToRemove)
+        //{
+        //    return attributes & ~attributesToRemove;
+        //}
+
+        /// <summary>
+        /// Determines whether [is file read only] [the specified file name].
+        /// </summary>
+        /// <param name="fileName">Name of the file.</param>
+        /// <returns>[true] if the file is readonly, otherwise [false]</returns>
+        private static bool IsFileReadOnly(string fileName)
+        {
+            var info = new FileInfo(fileName);
+            return info.IsReadOnly;
         }
 
         /// <summary>
@@ -174,6 +208,13 @@ namespace Marazt.ConfigTransformation.Transformation
             if (!result)
             {
                 Logger.LogInfo(Resources.InvalidTransformationFileName);
+                return;
+            }
+
+            if (IsFileReadOnly(sourceFileName))
+            {
+                Logger.LogInfo(string.Format(Resources.FileIsReadOnly, sourceFileName));
+                MessageBox.Show(string.Format(Resources.FileIsReadOnlyChange, sourceFileName), Resources.ApplicationCaption, MessageBoxButton.OK, MessageBoxImage.Asterisk);
                 return;
             }
 
