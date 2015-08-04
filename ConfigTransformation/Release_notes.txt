@@ -33,3 +33,10 @@ Version 1.3.3.0
 - Bug fix: Added information message about readonly file which should set to readwrite or checked-out
 
 ===========================================================================================================
+
+
+Version 1.3.4.0
+
+- Added support for Viasu Studio 2015
+
+===========================================================================================================
