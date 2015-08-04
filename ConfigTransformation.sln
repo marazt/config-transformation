@@ -1,15 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigTransformation", "ConfigTransformation\ConfigTransformation.csproj", "{5C30C034-4B04-4963-82CC-B64E66F00252}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigTransformation_IntegrationTests", "ConfigTransformation\ConfigTransformation_IntegrationTests\ConfigTransformation_IntegrationTests.csproj", "{BB40BD6F-3211-472A-BB27-8AE05FC246F1}"
-EndProject
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D0598783-CFAA-46CE-9856-7F569687EF26}"
 	ProjectSection(SolutionItems) = preProject
 		IntegrationTests.testsettings = IntegrationTests.testsettings
 		UnitTests.testsettings = UnitTests.testsettings
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigTransformation", "ConfigTransformation\ConfigTransformation.csproj", "{5C30C034-4B04-4963-82CC-B64E66F00252}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigTransformation_IntegrationTests", "ConfigTransformation\ConfigTransformation_IntegrationTests\ConfigTransformation_IntegrationTests.csproj", "{BB40BD6F-3211-472A-BB27-8AE05FC246F1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigTransformation_UnitTests", "ConfigTransformation_UnitTests\ConfigTransformation_UnitTests.csproj", "{666BFA2F-F452-4C0D-A564-204B667810A8}"
 EndProject
@@ -43,13 +45,13 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		AssemblyInfoVersionSettings = None.None.DateStamp.TimeStamp
-		AssemblyFileVersionSettings = None.None.DateStamp.TimeStamp
-		AssemblyVersionSettings = None.None.DateStamp.TimeStamp
-		UpdateAssemblyInfoVersion = True
-		UpdateAssemblyFileVersion = True
-		UpdateAssemblyVersion = True
-		AssemblyInfoFilePath = Properties\AssemblyInfo.cs
 		ConfigurationFilter = 
+		AssemblyInfoFilePath = Properties\AssemblyInfo.cs
+		UpdateAssemblyVersion = True
+		UpdateAssemblyFileVersion = True
+		UpdateAssemblyInfoVersion = True
+		AssemblyVersionSettings = None.None.DateStamp.TimeStamp
+		AssemblyFileVersionSettings = None.None.DateStamp.TimeStamp
+		AssemblyInfoVersionSettings = None.None.DateStamp.TimeStamp
 	EndGlobalSection
 EndGlobal
