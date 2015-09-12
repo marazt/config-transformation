@@ -49,7 +49,7 @@ namespace Marazt.ConfigTransformation.Transformation
         /// <summary>
         /// The transformation temporary file name
         /// </summary>
-        private const string TransformationTempFileName = "ConfigTransformationTempFile.tmp";
+        private const string TransformationTempFileName = "ConfigTransformationTempFile.tmp" + ConfigExtension;
 
         /// <summary>
         /// The supported project extensions
