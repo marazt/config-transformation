@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows;
+using System.Xml;
 using Marazt.Commons.Xml;
 using Marazt.ConfigTransformation.Logging;
 
@@ -35,6 +36,11 @@ namespace Marazt.ConfigTransformation.Transformation
         /// The nest transformation files
         /// </summary>
         public const bool NestTransformationFiles = false;
+
+        /// <summary>
+        /// The write attributes on a separate line
+        /// </summary>
+        public const bool WriteAttributesOnASeparateLine = false;
 
         /// <summary>
         /// The configuration extension
@@ -235,6 +241,7 @@ namespace Marazt.ConfigTransformation.Transformation
                     : string.Format(Resources.TransformationProcessError, backupFileName, transformationFileName,
                         sourceFileName));
 
+                FormatFile(sourceFileName);
                 DeleteFile(backupFileName);
                 Logger.LogInfo(string.Format(Resources.DeletionOfTemporaryFileDone, backupFileName));
             }
@@ -280,6 +287,9 @@ namespace Marazt.ConfigTransformation.Transformation
                 {
                     Logger.LogInfo(string.Format(Resources.TransformationOfFileSuccessfullyDone, sourceFileName,
                         transformationFileName, tempTargetFileName));
+
+                    FormatFile(tempTargetFileName);
+
                     return new Tuple<string, string>(sourceFileName, tempTargetFileName);
                 }
 
@@ -297,6 +307,36 @@ namespace Marazt.ConfigTransformation.Transformation
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Formats the file.
+        /// </summary>
+        /// <param name="fileName">Name of the file.</param>
+        private static void FormatFile(string fileName)
+        {
+            // because now there is only one indent property, run it only if it is true...
+            var format = Options.Options.WriteAttributesOnASeparateLine;
+            if (format)
+            {
+                Logger.LogInfo(string.Format(Resources.FormattingFile, fileName));
+
+                var settings = new XmlWriterSettings
+                {
+                    Indent = true,
+                    //IndentChars = "\t",
+                    NewLineOnAttributes = Options.Options.WriteAttributesOnASeparateLine,
+                    ConformanceLevel = ConformanceLevel.Auto
+                };
+                
+                var document = new XmlDocument();
+                document.Load(fileName);
+
+                using (var writer = XmlWriter.Create(fileName, settings))
+                {
+                    document.WriteContentTo(writer);
+                }
+            }
         }
 
         /// <summary>

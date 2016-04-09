@@ -135,6 +135,9 @@
   <data name="FileIsReadOnlyChange" xml:space="preserve">
     <value>File '{0}' is readonly. It must be set to readwrite or checked-out</value>
   </data>
+  <data name="FormattingFile" xml:space="preserve">
+    <value>Formatting file '{0}'</value>
+  </data>
   <data name="Global" xml:space="preserve">
     <value>Global</value>
   </data>

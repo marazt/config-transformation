@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="a8ef38c4-8d82-4245-a6ac-775412dd55e7" Version="1.3.6.0" Language="en-US" Publisher="marazt" />
+    <Identity Id="a8ef38c4-8d82-4245-a6ac-775412dd55e7" Version="1.3.7.0" Language="en-US" Publisher="marazt" />
     <DisplayName>ConfigTransformation</DisplayName>
     <Description xml:space="preserve">Extension which enables ability to transform various config file even there does not exist build definition for the transformation file. Supports all .NET projects even WebSites.</Description>
     <MoreInfo>http://visualstudiogallery.msdn.microsoft.com/2ab58875-5ead-44aa-b3e8-52965b8bd47d</MoreInfo>

@@ -33,6 +33,12 @@ namespace Marazt.ConfigTransformation.Options
         /// </summary>
         public const string NestTransformationFilesPropertyName = "NestTransformationFiles";
 
+
+        /// <summary>
+        /// The write attributes on a separate line property name
+        /// </summary>
+        public const string WriteAttributesOnASeparateLinePropertyName = "WriteAttributesOnASeparateLine";
+
         #endregion Constants
 
         #region Fields
@@ -51,6 +57,11 @@ namespace Marazt.ConfigTransformation.Options
         /// The nest transformation files
         /// </summary>
         private bool nestTransformationFiles = TransformationProvider.NestTransformationFiles;
+
+        /// <summary>
+        /// The write attributes on a separate line
+        /// </summary>
+        private bool writeAttributesOnASeparateLine = TransformationProvider.WriteAttributesOnASeparateLine;
 
         #endregion Fields
 
@@ -121,6 +132,22 @@ namespace Marazt.ConfigTransformation.Options
             set
             {
                 nestTransformationFiles = value;
+            }
+        }
+
+        [Category("Basic Options")]
+        // ReSharper disable once LocalizableElement
+        [DisplayName("Write attributes on a separate line")]
+        [Description("Option to set if transformation file should have attribues on separate lines")]
+        public bool WriteAttributesOnASeparateLine
+        {
+            get
+            {
+                return writeAttributesOnASeparateLine;
+            }
+            set
+            {
+                writeAttributesOnASeparateLine = value;
             }
         }
 

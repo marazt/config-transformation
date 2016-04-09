@@ -115,6 +115,15 @@ namespace Marazt.ConfigTransformation {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Formatting file &apos;{0}&apos;.
+        /// </summary>
+        public static string FormattingFile {
+            get {
+                return ResourceManager.GetString("FormattingFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Global.
         /// </summary>
         public static string Global {
