@@ -61,8 +61,9 @@
     <DocumentationFile>bin\Release\ConfigTransformation.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Marazt.Commons.Xml">
-      <HintPath>..\Libs\Marazt.Commons.Xml.dll</HintPath>
+    <Reference Include="Marazt.Commons.Xml, Version=1.0.14270.1006, Culture=neutral, PublicKeyToken=459a0e9af85315ac, processorArchitecture=MSIL">
+      <HintPath>..\packages\Marazt.Commons.Xml.1.0.14270.1006\lib\net45\Marazt.Commons.Xml.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Practices.RecipeFramework.Library">
@@ -80,8 +81,9 @@
     <Reference Include="Microsoft.VisualStudio.Shell.11.0" />
     <Reference Include="Microsoft.VisualStudio.Shell.Immutable.10.0" />
     <Reference Include="Microsoft.VisualStudio.Shell.Immutable.11.0" />
-    <Reference Include="Microsoft.Web.XmlTransform">
-      <HintPath>..\Libs\Microsoft.Web.XmlTransform.dll</HintPath>
+    <Reference Include="Microsoft.Web.XmlTransform, Version=2.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Xdt.2.1.1\lib\net40\Microsoft.Web.XmlTransform.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -194,6 +196,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
     </None>
