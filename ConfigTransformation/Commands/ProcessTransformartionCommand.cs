@@ -17,10 +17,7 @@ namespace Marazt.ConfigTransformation.Commands
         /// <value>
         /// The command set unique identifier.
         /// </value>
-        public override Guid CmdSetGuid
-        {
-            get { return GuidList.guidConfigTransformationCmdSet; }
-        }
+        public override Guid CmdSetGuid => GuidList.guidConfigTransformationCmdSet;
 
         /// <summary>
         /// Gets or sets the command identifier.
@@ -28,10 +25,7 @@ namespace Marazt.ConfigTransformation.Commands
         /// <value>
         /// The command identifier.
         /// </value>
-        public override int CmdID
-        {
-            get { return (int)PkgCmdIDList.cmdidCtxMenuTransformItem; }
-        }
+        public override int CmdID => (int)PkgCmdIDList.cmdidCtxMenuTransformItem;
 
         #endregion Properties
 

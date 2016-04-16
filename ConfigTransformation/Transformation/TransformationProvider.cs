@@ -153,31 +153,8 @@ namespace Marazt.ConfigTransformation.Transformation
         private static void CreateBackupFileOfFile(string fileName, string backupFileName)
         {
             File.Copy(fileName, backupFileName, true);
-
-            //var attributes = File.GetAttributes(backupFileName);
-
-            //if ((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
-            //{
-            //    // Make the file RW
-            //    attributes = RemoveAttribute(attributes, FileAttributes.ReadOnly);
-            //    File.SetAttributes(backupFileName, attributes);
-
-            //} 
-
         }
-
-
-        ///// <summary>
-        ///// Removes the attribute.
-        ///// </summary>
-        ///// <param name="attributes">The attributes.</param>
-        ///// <param name="attributesToRemove">The attributes to remove.</param>
-        ///// <returns>Attributes of the file</returns>
-        //private static FileAttributes RemoveAttribute(FileAttributes attributes, FileAttributes attributesToRemove)
-        //{
-        //    return attributes & ~attributesToRemove;
-        //}
-
+        
         /// <summary>
         /// Determines whether [is file read only] [the specified file name].
         /// </summary>

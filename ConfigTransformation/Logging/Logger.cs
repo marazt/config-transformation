@@ -87,8 +87,6 @@ namespace Marazt.ConfigTransformation.Logging
         /// <param name="message">The message.</param>
         private static void WriteToVsGeneralOutput(string message)
         {
-
-
             var outputWindow = Package.GetGlobalService(typeof(SVsOutputWindow)) as IVsOutputWindow;
             if (outputWindow == null)
             {

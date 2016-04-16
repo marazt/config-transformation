@@ -14,20 +14,13 @@ namespace Marazt.ConfigTransformation.FileNesting
     /// </summary>
     internal static class ConfigFileNester
     {
-        #region Properties
-
-        #endregion Properties
-
         #region Methods
-
-
 
         /// <summary>
         /// Nests the configuration files in solution.
         /// </summary>
         public static void NestConfigurationFilesInSolution()
         {
-
             foreach (Project project in DTEHelper.GetInstance().Solution.Projects)
             {
                 NestConfigurationFilesInProject(project);
@@ -50,16 +43,18 @@ namespace Marazt.ConfigTransformation.FileNesting
             else
             {
                 // if solution folder, one of its ProjectItems might be a real project
-                if (project.ProjectItems != null)
+                if (project.ProjectItems == null)
                 {
-                    foreach (ProjectItem item in project.ProjectItems)
-                    {
-                        var realProject = item.Object as Project;
+                    return;
+                }
 
-                        if (realProject != null)
-                        {
-                            SearchFolConfigFilesAndNestThem(project.ProjectItems);
-                        }
+                foreach (ProjectItem item in project.ProjectItems)
+                {
+                    var realProject = item.Object as Project;
+
+                    if (realProject != null)
+                    {
+                        SearchFolConfigFilesAndNestThem(project.ProjectItems);
                     }
                 }
             }

@@ -220,7 +220,7 @@ namespace Marazt.ConfigTransformation.Helpers
             itemFullPath = null;
             IVsHierarchy hierarchy;
             // ReSharper disable once RedundantAssignment
-            uint itemid = VSConstants.VSITEMID_NIL;
+            var itemid = VSConstants.VSITEMID_NIL;
 
             //TODO: It is needed?
             if (!IsSingleProjectItemSelection(out hierarchy, out itemid))
@@ -240,19 +240,7 @@ namespace Marazt.ConfigTransformation.Helpers
                 return false;
             }
 
-            //var buildPropertyStorage = vsProject as IVsBuildPropertyStorage;
-            //if (buildPropertyStorage == null)
-            //{
-            //    return false;
-            //}
-
-
-            if (ErrorHandler.Failed(vsProject.GetMkDocument(itemid, out itemFullPath)))
-            {
-                return false;
-            }
-
-            return true;
+            return !ErrorHandler.Failed(vsProject.GetMkDocument(itemid, out itemFullPath));
         }
 
 

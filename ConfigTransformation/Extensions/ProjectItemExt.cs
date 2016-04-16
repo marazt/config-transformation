@@ -37,12 +37,7 @@ namespace Marazt.ConfigTransformation.Extensions
         {
             propertyValue = default(TResult);
 
-            if (source.Properties == null)
-            {
-                return false;
-            }
-
-            var property = source.Properties.Cast<Property>().SingleOrDefault(e => e.Name.Equals(propertyName));
+            var property = source.Properties?.Cast<Property>().SingleOrDefault(e => e.Name.Equals(propertyName));
 
             if (property == null)
             {
@@ -99,7 +94,7 @@ namespace Marazt.ConfigTransformation.Extensions
         /// <returns></returns>
         private static TResult GetPropertyValue<TResult>(this ProjectItem source, string propertyName)
         {
-            return (TResult)source.Properties.Cast<Property>().First<Property>(e => e.Name.Equals(propertyName)).Value;
+            return (TResult)source.Properties.Cast<Property>().First(e => e.Name.Equals(propertyName)).Value;
         }
 
         #endregion Methods

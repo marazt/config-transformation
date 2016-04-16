@@ -43,44 +43,42 @@ namespace Marazt.ConfigTransformation.Commands
         public void BeforeQueryStatus(object sender, EventArgs e)
         {
 
-
-
             // get the menu that fired the event
             var menuCommand = sender as OleMenuCommand;
-            if (menuCommand != null)
+            if (menuCommand == null)
             {
-
-                // start by assuming that the menu will not be shown
-                menuCommand.Visible = false;
-                menuCommand.Enabled = false;
-
-                // ReSharper disable once RedundantAssignment
-                IVsHierarchy hierarchy = null;
-                // ReSharper disable once RedundantAssignment
-                uint itemID = VSConstants.VSITEMID_NIL;
-
-                if (!SolutionHelper.IsSingleProjectItemSelection(out hierarchy, out itemID))
-                {
-                    return;
-                }
-
-
-                var vsProject = (IVsProject)hierarchy;
-                if (!SolutionHelper.ProjectSupportsTransforms(vsProject))
-                {
-                    return;
-                }
-
-                var fileName = SolutionHelper.GetFileNameFromItem(vsProject, itemID);
-                if (fileName == null || !IsTransformationFile(fileName))
-                {
-                    return;
-                }
-
-                menuCommand.Visible = true;
-                menuCommand.Enabled = true;
+                return;
             }
 
+            // start by assuming that the menu will not be shown
+            menuCommand.Visible = false;
+            menuCommand.Enabled = false;
+
+            // ReSharper disable once RedundantAssignment
+            IVsHierarchy hierarchy = null;
+            // ReSharper disable once RedundantAssignment
+            var itemID = VSConstants.VSITEMID_NIL;
+
+            if (!SolutionHelper.IsSingleProjectItemSelection(out hierarchy, out itemID))
+            {
+                return;
+            }
+
+
+            var vsProject = (IVsProject) hierarchy;
+            if (!SolutionHelper.ProjectSupportsTransforms(vsProject))
+            {
+                return;
+            }
+
+            var fileName = SolutionHelper.GetFileNameFromItem(vsProject, itemID);
+            if (fileName == null || !IsTransformationFile(fileName))
+            {
+                return;
+            }
+
+            menuCommand.Visible = true;
+            menuCommand.Enabled = true;
         }
 
         /// <summary>
