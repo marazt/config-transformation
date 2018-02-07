@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigTransformation", "ConfigTransformation\ConfigTransformation.csproj", "{5C30C034-4B04-4963-82CC-B64E66F00252}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigTransformation_IntegrationTests", "ConfigTransformation\ConfigTransformation_IntegrationTests\ConfigTransformation_IntegrationTests.csproj", "{BB40BD6F-3211-472A-BB27-8AE05FC246F1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigTransformation_IntegrationTests", "ConfigTransformation_IntegrationTests\ConfigTransformation_IntegrationTests.csproj", "{BB40BD6F-3211-472A-BB27-8AE05FC246F1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigTransformation_UnitTests", "ConfigTransformation_UnitTests\ConfigTransformation_UnitTests.csproj", "{666BFA2F-F452-4C0D-A564-204B667810A8}"
 EndProject
