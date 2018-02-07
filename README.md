@@ -1,7 +1,7 @@
 ![](https://i1.visualstudiogallery.msdn.s-msft.com/2ab58875-5ead-44aa-b3e8-52965b8bd47d/image/file/137602/16/thumbnail.png) Config Transformation Visual Studio Extension
 ==================
 
-Version 1.3.7.0
+Version 1.4.0.0
 
 Author marazt
 
@@ -9,7 +9,7 @@ Copyright marazt
 
 License The MIT License (MIT)
 
-Last updated 09 May 2016
+Last updated 08 February 2018
 
 [Visual Studio Gallery Link](https://visualstudiogallery.msdn.microsoft.com/2ab58875-5ead-44aa-b3e8-52965b8bd47d)
 
@@ -32,7 +32,7 @@ Abilities
 + Application output (transformation progress, errors, infomation) in **General Output window**.
 + Configuration in **Tools** -> **Options** -> **Config transformation menu**.
 + Transformation file nesting, can be set in **Tools** -> **Options** -> **Config transformation menu**.
-+ Supports Visual Studio 12, Visual Studio 13, Visual Studio 15.
++ Supports Visual Studio 2012, Visual Studio 2013, Visual Studio 2015, Visual Studio 2017.
 
 
 
@@ -59,6 +59,12 @@ TODO
 
 Versions
 -----------------
+
+
+**Version 1.4.0.0 - 2018/02/08 Support for VS2017**
+
+* Support for VS2017. Thanks @tbertenshaw for PR.
+
 
 
 **Version 1.3.7.0 - 2016/04/09 (Added to GitHub)**

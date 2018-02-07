@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2020
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D0598783-CFAA-46CE-9856-7F569687EF26}"
 	ProjectSection(SolutionItems) = preProject
@@ -45,11 +45,14 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		ConfigurationFilter = 
+		SolutionGuid = {5E3DA4A4-6403-41C8-8024-65F90BFD9344}
+	EndGlobalSection
+	GlobalSection(AutomaticVersions) = postSolution
 		AssemblyInfoFilePath = Properties\AssemblyInfo.cs
 		UpdateAssemblyVersion = True
 		UpdateAssemblyFileVersion = True
 		UpdateAssemblyInfoVersion = True
+		ShouldCreateLogs = True
 		AssemblyVersionSettings = None.None.DateStamp.TimeStamp
 		AssemblyFileVersionSettings = None.None.DateStamp.TimeStamp
 		AssemblyInfoVersionSettings = None.None.DateStamp.TimeStamp

@@ -1,4 +1,10 @@
-Version 1.3.7.0 - 2016/04/09 (Added to GitHub)
+Version 1.4.0.0 - 2018/02/07 Support for VS2017
+
+- Support for VS2017. Thanks @tbertenshaw for PR.
+
+=========================================================================================================== 
+
+Version 1.3.7.0 - 2018/04/09 (Added to GitHub)
 
 - New option item Write attributes on a separate line added. If this option is set to true, transformed config has every attribute on separate line. Default value is false.
 
