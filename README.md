@@ -1,4 +1,4 @@
-![](https://i1.visualstudiogallery.msdn.s-msft.com/2ab58875-5ead-44aa-b3e8-52965b8bd47d/image/file/137602/16/thumbnail.png) Config Transformation Visual Studio Extension
+<img src="./Icons/transform2.png" align="left" style="width:128px; margin-right: 20px;" /> Config Transformation Visual Studio Extension
 ==================
 
 Version 1.4.0.0
@@ -41,11 +41,11 @@ How To Use It
 + File you want to change must be checked out (not locked, not readonly).
 + Click on the transformation configuration you want to run with the right mouse button and click "Execute transformation" option.
 
-![](http://i1.visualstudiogallery.msdn.s-msft.com/2ab58875-5ead-44aa-b3e8-52965b8bd47d/image/file/137770/1/preview2.png)
+![](./Icons/preview2.png)
 
 + Extension options can be found in **Tools** -> **Options** -> **Config Transformation**
 
-![](https://i1.visualstudiogallery.msdn.s-msft.com/2ab58875-5ead-44aa-b3e8-52965b8bd47d/image/file/207805/1/options.png)
+![](./Icons/options.png)
 
 + Information about transformation can be found in **General Output Window**.
 + You can see the transformation preview by **Preview transformation** menu item.
