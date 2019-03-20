@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="a8ef38c4-8d82-4245-a6ac-775412dd55e7" Version="1.4.0.0" Language="en-US" Publisher="marazt" />
+        <Identity Id="a8ef38c4-8d82-4245-a6ac-775412dd55e7" Version="1.5.0.0" Language="en-US" Publisher="marazt" />
         <DisplayName>ConfigTransformation</DisplayName>
         <Description xml:space="preserve">Extension which enables ability to transform various config file even there does not exist build definition for the transformation file. Supports all .NET projects even WebSites.</Description>
         <MoreInfo>http://visualstudiogallery.msdn.microsoft.com/2ab58875-5ead-44aa-b3e8-52965b8bd47d</MoreInfo>
@@ -12,20 +12,17 @@
         <Tags>Config, Transformation, Configuration, Build, XML, XDT</Tags>
     </Metadata>
     <Installation InstalledByMsi="false" AllUsers="true">
-        <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="[11.0,]" />
-        <InstallationTarget Version="[11.0,]" Id="Microsoft.VisualStudio.Premium" />
-        <InstallationTarget Version="[11.0,]" Id="Microsoft.VisualStudio.Ultimate" />
-        <InstallationTarget Version="[11.0,]" Id="Microsoft.VisualStudio.Enterprise" />
-        <InstallationTarget Version="[11.0,]" Id="Microsoft.VisualStudio.Community" />
+        <InstallationTarget Version="[11.0,17.0)" Id="Microsoft.VisualStudio.Pro"/>
+        <InstallationTarget Version="[11.0,17.0)" Id="Microsoft.VisualStudio.Premium" />
+        <InstallationTarget Version="[11.0,17.0)" Id="Microsoft.VisualStudio.Ultimate" />
+        <InstallationTarget Version="[11.0,17.0)" Id="Microsoft.VisualStudio.Enterprise" />
+        <InstallationTarget Version="[11.0,17.0)" Id="Microsoft.VisualStudio.Community" />
     </Installation>
-    <Dependencies>
-        <Dependency Id="Microsoft.VisualStudio.MPF.11.0" DisplayName="Visual Studio MPF 11.0" d:Source="Installed" Version="11.0" />
-    </Dependencies>
     <Assets>
         <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
     </Assets>
     <Prerequisites>
-        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0.26208.0,16.0)" DisplayName="Visual Studio core editor" />
-        <Prerequisite Id="Microsoft.VisualStudio.Component.Roslyn.LanguageServices" Version="[15.0.26208.0,16.0)" DisplayName="C# and Visual Basic" />
+        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,)" DisplayName="Visual Studio core editor" />
+        <Prerequisite Id="Microsoft.VisualStudio.Component.Roslyn.LanguageServices" Version="[15.0,)" DisplayName="C# and Visual Basic" />
     </Prerequisites>
 </PackageManifest>
