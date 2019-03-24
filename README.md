@@ -1,7 +1,7 @@
 <img src="./Icons/transform2.png" align="left" style="width:128px; margin-right: 20px;" /> Config Transformation Visual Studio Extension
 ==================
 
-Version 1.4.0.0
+Version 1.5.0.0
 
 Author marazt
 
@@ -9,7 +9,7 @@ Copyright marazt
 
 License The MIT License (MIT)
 
-Last updated 08 February 2018
+Last updated 24 March 2019
 
 [Visual Studio Gallery Link](https://visualstudiogallery.msdn.microsoft.com/2ab58875-5ead-44aa-b3e8-52965b8bd47d)
 
@@ -59,6 +59,10 @@ TODO
 
 Versions
 -----------------
+**Version 1.5.0.0 - 2019/03/24 Support for VS2019**
+
+* Support for VS2019. Thanks @tbertenshaw for PR.
+
 
 
 **Version 1.4.0.0 - 2018/02/08 Support for VS2017**
